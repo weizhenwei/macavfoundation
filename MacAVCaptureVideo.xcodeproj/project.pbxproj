@@ -1,0 +1,454 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6DFAA8DA1BD4D799000BC188 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA8D91BD4D799000BC188 /* AppDelegate.m */; };
+		6DFAA8DC1BD4D799000BC188 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA8DB1BD4D799000BC188 /* main.m */; };
+		6DFAA8DF1BD4D799000BC188 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA8DE1BD4D799000BC188 /* ViewController.mm */; };
+		6DFAA8E11BD4D799000BC188 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6DFAA8E01BD4D799000BC188 /* Images.xcassets */; };
+		6DFAA8E41BD4D799000BC188 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6DFAA8E21BD4D799000BC188 /* Main.storyboard */; };
+		6DFAA8F01BD4D799000BC188 /* MacAVCaptureVideoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA8EF1BD4D799000BC188 /* MacAVCaptureVideoTests.m */; };
+		6DFAA8FA1BD4D80B000BC188 /* MacVideoCapSession.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA8F91BD4D80B000BC188 /* MacVideoCapSession.mm */; };
+		6DFAA8FD1BD4D9E4000BC188 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DFAA8FC1BD4D9E4000BC188 /* AVFoundation.framework */; };
+		6DFAA8FF1BD4DA0A000BC188 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DFAA8FE1BD4DA0A000BC188 /* CoreVideo.framework */; };
+		6DFAA9011BD4DA17000BC188 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DFAA9001BD4DA17000BC188 /* CoreMedia.framework */; };
+		6DFAA90D1BD4DB9E000BC188 /* MacVideoCapEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA90C1BD4DB9E000BC188 /* MacVideoCapEngine.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6DFAA8EA1BD4D799000BC188 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6DFAA8CB1BD4D799000BC188 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6DFAA8D21BD4D799000BC188;
+			remoteInfo = MacAVCaptureVideo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6DFAA8D31BD4D799000BC188 /* MacAVCaptureVideo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacAVCaptureVideo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DFAA8D71BD4D799000BC188 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DFAA8D81BD4D799000BC188 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		6DFAA8D91BD4D799000BC188 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		6DFAA8DB1BD4D799000BC188 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6DFAA8DD1BD4D799000BC188 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		6DFAA8DE1BD4D799000BC188 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		6DFAA8E01BD4D799000BC188 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		6DFAA8E31BD4D799000BC188 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6DFAA8E91BD4D799000BC188 /* MacAVCaptureVideoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacAVCaptureVideoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6DFAA8EE1BD4D799000BC188 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6DFAA8EF1BD4D799000BC188 /* MacAVCaptureVideoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MacAVCaptureVideoTests.m; sourceTree = "<group>"; };
+		6DFAA8F91BD4D80B000BC188 /* MacVideoCapSession.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MacVideoCapSession.mm; sourceTree = "<group>"; };
+		6DFAA8FC1BD4D9E4000BC188 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6DFAA8FE1BD4DA0A000BC188 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		6DFAA9001BD4DA17000BC188 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		6DFAA90B1BD4DB67000BC188 /* MacVideoCapEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacVideoCapEngine.h; sourceTree = "<group>"; };
+		6DFAA90C1BD4DB9E000BC188 /* MacVideoCapEngine.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MacVideoCapEngine.mm; sourceTree = "<group>"; };
+		6DFAA90E1BD4E5C1000BC188 /* MacVideoCapSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacVideoCapSession.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6DFAA8D01BD4D799000BC188 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DFAA9011BD4DA17000BC188 /* CoreMedia.framework in Frameworks */,
+				6DFAA8FF1BD4DA0A000BC188 /* CoreVideo.framework in Frameworks */,
+				6DFAA8FD1BD4D9E4000BC188 /* AVFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DFAA8E61BD4D799000BC188 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6DFAA8CA1BD4D799000BC188 = {
+			isa = PBXGroup;
+			children = (
+				6DFAA8D51BD4D799000BC188 /* MacAVCaptureVideo */,
+				6DFAA90A1BD4DB05000BC188 /* Frameworks */,
+				6DFAA8EC1BD4D799000BC188 /* MacAVCaptureVideoTests */,
+				6DFAA8D41BD4D799000BC188 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6DFAA8D41BD4D799000BC188 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6DFAA8D31BD4D799000BC188 /* MacAVCaptureVideo.app */,
+				6DFAA8E91BD4D799000BC188 /* MacAVCaptureVideoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6DFAA8D51BD4D799000BC188 /* MacAVCaptureVideo */ = {
+			isa = PBXGroup;
+			children = (
+				6DFAA8D81BD4D799000BC188 /* AppDelegate.h */,
+				6DFAA8D91BD4D799000BC188 /* AppDelegate.m */,
+				6DFAA8DD1BD4D799000BC188 /* ViewController.h */,
+				6DFAA8DE1BD4D799000BC188 /* ViewController.mm */,
+				6DFAA90E1BD4E5C1000BC188 /* MacVideoCapSession.h */,
+				6DFAA8F91BD4D80B000BC188 /* MacVideoCapSession.mm */,
+				6DFAA90B1BD4DB67000BC188 /* MacVideoCapEngine.h */,
+				6DFAA90C1BD4DB9E000BC188 /* MacVideoCapEngine.mm */,
+				6DFAA8E01BD4D799000BC188 /* Images.xcassets */,
+				6DFAA8E21BD4D799000BC188 /* Main.storyboard */,
+				6DFAA8D61BD4D799000BC188 /* Supporting Files */,
+			);
+			path = MacAVCaptureVideo;
+			sourceTree = "<group>";
+		};
+		6DFAA8D61BD4D799000BC188 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6DFAA8D71BD4D799000BC188 /* Info.plist */,
+				6DFAA8DB1BD4D799000BC188 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6DFAA8EC1BD4D799000BC188 /* MacAVCaptureVideoTests */ = {
+			isa = PBXGroup;
+			children = (
+				6DFAA8EF1BD4D799000BC188 /* MacAVCaptureVideoTests.m */,
+				6DFAA8ED1BD4D799000BC188 /* Supporting Files */,
+			);
+			path = MacAVCaptureVideoTests;
+			sourceTree = "<group>";
+		};
+		6DFAA8ED1BD4D799000BC188 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6DFAA8EE1BD4D799000BC188 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6DFAA90A1BD4DB05000BC188 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6DFAA9001BD4DA17000BC188 /* CoreMedia.framework */,
+				6DFAA8FE1BD4DA0A000BC188 /* CoreVideo.framework */,
+				6DFAA8FC1BD4D9E4000BC188 /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6DFAA8D21BD4D799000BC188 /* MacAVCaptureVideo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DFAA8F31BD4D799000BC188 /* Build configuration list for PBXNativeTarget "MacAVCaptureVideo" */;
+			buildPhases = (
+				6DFAA8CF1BD4D799000BC188 /* Sources */,
+				6DFAA8D01BD4D799000BC188 /* Frameworks */,
+				6DFAA8D11BD4D799000BC188 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MacAVCaptureVideo;
+			productName = MacAVCaptureVideo;
+			productReference = 6DFAA8D31BD4D799000BC188 /* MacAVCaptureVideo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6DFAA8E81BD4D799000BC188 /* MacAVCaptureVideoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6DFAA8F61BD4D799000BC188 /* Build configuration list for PBXNativeTarget "MacAVCaptureVideoTests" */;
+			buildPhases = (
+				6DFAA8E51BD4D799000BC188 /* Sources */,
+				6DFAA8E61BD4D799000BC188 /* Frameworks */,
+				6DFAA8E71BD4D799000BC188 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6DFAA8EB1BD4D799000BC188 /* PBXTargetDependency */,
+			);
+			name = MacAVCaptureVideoTests;
+			productName = MacAVCaptureVideoTests;
+			productReference = 6DFAA8E91BD4D799000BC188 /* MacAVCaptureVideoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6DFAA8CB1BD4D799000BC188 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = zhewei;
+				TargetAttributes = {
+					6DFAA8D21BD4D799000BC188 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					6DFAA8E81BD4D799000BC188 = {
+						CreatedOnToolsVersion = 6.4;
+						TestTargetID = 6DFAA8D21BD4D799000BC188;
+					};
+				};
+			};
+			buildConfigurationList = 6DFAA8CE1BD4D799000BC188 /* Build configuration list for PBXProject "MacAVCaptureVideo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6DFAA8CA1BD4D799000BC188;
+			productRefGroup = 6DFAA8D41BD4D799000BC188 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6DFAA8D21BD4D799000BC188 /* MacAVCaptureVideo */,
+				6DFAA8E81BD4D799000BC188 /* MacAVCaptureVideoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6DFAA8D11BD4D799000BC188 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DFAA8E11BD4D799000BC188 /* Images.xcassets in Resources */,
+				6DFAA8E41BD4D799000BC188 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DFAA8E71BD4D799000BC188 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6DFAA8CF1BD4D799000BC188 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DFAA8DA1BD4D799000BC188 /* AppDelegate.m in Sources */,
+				6DFAA8DF1BD4D799000BC188 /* ViewController.mm in Sources */,
+				6DFAA8FA1BD4D80B000BC188 /* MacVideoCapSession.mm in Sources */,
+				6DFAA90D1BD4DB9E000BC188 /* MacVideoCapEngine.mm in Sources */,
+				6DFAA8DC1BD4D799000BC188 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6DFAA8E51BD4D799000BC188 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6DFAA8F01BD4D799000BC188 /* MacAVCaptureVideoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6DFAA8EB1BD4D799000BC188 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6DFAA8D21BD4D799000BC188 /* MacAVCaptureVideo */;
+			targetProxy = 6DFAA8EA1BD4D799000BC188 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6DFAA8E21BD4D799000BC188 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6DFAA8E31BD4D799000BC188 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6DFAA8F11BD4D799000BC188 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		6DFAA8F21BD4D799000BC188 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6DFAA8F41BD4D799000BC188 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MacAVCaptureVideo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		6DFAA8F51BD4D799000BC188 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MacAVCaptureVideo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		6DFAA8F71BD4D799000BC188 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MacAVCaptureVideoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacAVCaptureVideo.app/Contents/MacOS/MacAVCaptureVideo";
+			};
+			name = Debug;
+		};
+		6DFAA8F81BD4D799000BC188 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = MacAVCaptureVideoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MacAVCaptureVideo.app/Contents/MacOS/MacAVCaptureVideo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6DFAA8CE1BD4D799000BC188 /* Build configuration list for PBXProject "MacAVCaptureVideo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DFAA8F11BD4D799000BC188 /* Debug */,
+				6DFAA8F21BD4D799000BC188 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6DFAA8F31BD4D799000BC188 /* Build configuration list for PBXNativeTarget "MacAVCaptureVideo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DFAA8F41BD4D799000BC188 /* Debug */,
+				6DFAA8F51BD4D799000BC188 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6DFAA8F61BD4D799000BC188 /* Build configuration list for PBXNativeTarget "MacAVCaptureVideoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6DFAA8F71BD4D799000BC188 /* Debug */,
+				6DFAA8F81BD4D799000BC188 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6DFAA8CB1BD4D799000BC188 /* Project object */;
+}
