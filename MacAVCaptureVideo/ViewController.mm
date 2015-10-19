@@ -21,6 +21,10 @@
     // Do any additional setup after loading the view.
     MAC_LOG_INFO("ViewController::viewDidLoad()");
 
+    // set default value;
+    [tfFPS setIntValue:30];
+    [tfDumpFile setStringValue:[NSString stringWithUTF8String:"~/output.h264"]];
+
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if (nil == device) {
         return;
