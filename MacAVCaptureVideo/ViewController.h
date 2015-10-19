@@ -15,6 +15,13 @@
     CMacAVVideoCapEngine *m_pVideoCapEngine;
 }
 
+@property (assign) IBOutlet NSTextField *tfFPS;
+
+@property (assign) IBOutlet NSTextField *tfDumpFile;
+@property (assign) IBOutlet NSImageView *viewPreview;
+
+- (IBAction)startCapture:(id)sender;
+- (IBAction)stopCapture:(id)sender;
 
 @end
 

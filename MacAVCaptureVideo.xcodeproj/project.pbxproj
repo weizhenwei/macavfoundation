@@ -81,7 +81,6 @@
 			isa = PBXGroup;
 			children = (
 				6DFAA8D51BD4D799000BC188 /* MacAVCaptureVideo */,
-				6DFAA9191BD51F8D000BC188 /* Utils */,
 				6DFAA90A1BD4DB05000BC188 /* Frameworks */,
 				6DFAA8EC1BD4D799000BC188 /* MacAVCaptureVideoTests */,
 				6DFAA8D41BD4D799000BC188 /* Products */,
@@ -108,6 +107,7 @@
 				6DFAA8F91BD4D80B000BC188 /* MacVideoCapSession.mm */,
 				6DFAA90B1BD4DB67000BC188 /* MacVideoCapEngine.h */,
 				6DFAA90C1BD4DB9E000BC188 /* MacVideoCapEngine.mm */,
+				6DFAA9191BD51F8D000BC188 /* Utils */,
 				6DFAA8E01BD4D799000BC188 /* Images.xcassets */,
 				6DFAA8E21BD4D799000BC188 /* Main.storyboard */,
 				6DFAA8D61BD4D799000BC188 /* Supporting Files */,
@@ -158,6 +158,7 @@
 				6DFAA9151BD51F75000BC188 /* MacLog.cpp */,
 			);
 			name = Utils;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

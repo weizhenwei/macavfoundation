@@ -12,6 +12,9 @@
 
 @implementation ViewController
 
+@synthesize tfFPS;
+@synthesize tfDumpFile;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -31,4 +34,19 @@
     // Update the view, if already loaded.
 }
 
+- (IBAction)startCapture:(id)sender {
+    int iFPS = [tfFPS intValue];
+    NSString *strDumpFile = [tfDumpFile stringValue];
+
+    MAC_LOG_INFO("ViewController::startCapture(), FPS = " << iFPS
+                 << ", Dump File = " << strDumpFile.UTF8String);
+}
+
+- (IBAction)stopCapture:(id)sender {
+    int iFPS = [tfFPS intValue];
+    NSString *strDumpFile = [tfDumpFile stringValue];
+
+    MAC_LOG_INFO("ViewController::startCapture(), FPS = " << iFPS
+                 << ", Dump File = " << strDumpFile.UTF8String);
+}
 @end
