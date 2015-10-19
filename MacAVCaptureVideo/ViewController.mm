@@ -8,12 +8,15 @@
 
 #import "ViewController.h"
 
+#include "MacLog.h"
+
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     // Do any additional setup after loading the view.
+    MAC_LOG_INFO("ViewController::viewDidLoad()");
 
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if (nil == device) {
