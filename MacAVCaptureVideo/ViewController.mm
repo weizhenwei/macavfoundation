@@ -145,7 +145,16 @@
     // set default fps;
     m_fSelectedFPS = m_fMaxFPS;
 
+    // set delegate;
+    [tfFPS setDelegate:self];
+
     return MAC_S_OK;
+}
+
+- (void)setupAlert {
+    m_alert = [[NSAlert alloc] init];
+    [m_alert addButtonWithTitle:@"OK"];
+    [m_alert setAlertStyle:NSWarningAlertStyle];
 }
 
 - (void)viewDidLoad {
@@ -167,7 +176,16 @@
         return;
     }
 
+    [self setupAlert];
+
     m_pVideoCapEngine = new CMacAVVideoCapEngine();
+}
+
+- (void)dealloc {
+    [m_arraySessionPresets dealloc];
+    [m_alert dealloc];
+
+    [super dealloc];
 }
 
 - (void)setRepresentedObject:(id)representedObject {
@@ -221,16 +239,32 @@
     m_pSelectedSessionPreset = strSelectedSessionPreset;
 }
 
-// TODO: BUGS here!
-- (IBAction)selectFPS:(id)sender {
-    NSTextField *tffFPS = sender;
-    float fFPS = [tffFPS floatValue];
-    if (fFPS < m_fMinFPS || fFPS > m_fMaxFPS) {
-        MAC_LOG_ERROR("ViewController::selectFPS(), inputed FPS is invalid!");
+// overwrite NSTextFieldDelegate method;
+- (void)controlTextDidChange:(NSNotification *)notification {
+    NSTextField *tfField = [notification object];
+    if (tfField != tfFPS) {
+        MAC_LOG_ERROR("ViewController::controlTextDidChange(), wrong NSTextField passed in!");
+    }
+    NSScanner *scanner = [NSScanner scannerWithString:[tfField stringValue]];
+    int intValue = -1;
+    if (!([scanner scanInt:&intValue] && [scanner isAtEnd])) {
+        NSString *warningMessage = [NSString stringWithFormat:@"ERROR: Input is invalid integer!"];
+        [m_alert setMessageText:warningMessage];
+        [m_alert runModal];
+        tfFPS.stringValue = @"";
+        tfFPS.placeholderString = [NSString stringWithFormat:@"%d", (int)m_fMaxFPS];
         return;
     }
-    
-    m_fSelectedFPS = fFPS;
+    if (intValue < m_fMinFPS || intValue > m_fMaxFPS) {
+        NSString *warningMessage = [NSString stringWithFormat:@"ERROR: Valid FPS should be %d~%d!",
+                                    (int)m_fMinFPS, (int)m_fMaxFPS];
+        [m_alert setMessageText:warningMessage];
+        [m_alert runModal];
+        tfFPS.stringValue = @"";
+        tfFPS.placeholderString = [NSString stringWithFormat:@"%d", (int)m_fMaxFPS];
+    } else {
+        m_fSelectedFPS = intValue;
+    }
 }
 
 @end

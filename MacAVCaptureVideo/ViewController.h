@@ -11,7 +11,7 @@
 
 #include <map>
 
-@interface ViewController : NSViewController
+@interface ViewController : NSViewController <NSTextFieldDelegate>
 {
     CMacAVVideoCapEngine *m_pVideoCapEngine;
     AVCaptureDevice *m_pVideoCaptureDevice;
@@ -23,6 +23,8 @@
     NSString *m_pSelectedSessionPreset;
 
     float m_fMinFPS, m_fMaxFPS, m_fSelectedFPS;
+
+    NSAlert *m_alert;
 }
 @property (assign) IBOutlet NSPopUpButton *itmVideoFormat;
 - (IBAction)selectVideoFormat:(id)sender;
@@ -32,7 +34,6 @@
 
 @property (assign) IBOutlet NSTextField *lblFPS;
 @property (assign) IBOutlet NSTextField *tfFPS;
-- (IBAction)selectFPS:(id)sender;
 
 @property (assign) IBOutlet NSTextField *tfDumpFile;
 
