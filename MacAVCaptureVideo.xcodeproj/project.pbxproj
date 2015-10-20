@@ -20,6 +20,7 @@
 		6DFAA90D1BD4DB9E000BC188 /* MacVideoCapEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA90C1BD4DB9E000BC188 /* MacVideoCapEngine.mm */; };
 		6DFAA9171BD51F75000BC188 /* MacLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA9151BD51F75000BC188 /* MacLog.cpp */; };
 		6DFAA9181BD51F75000BC188 /* MacLog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6DFAA9151BD51F75000BC188 /* MacLog.cpp */; };
+		6DFAA91D1BD5F164000BC188 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DFAA91C1BD5F164000BC188 /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		6DFAA90E1BD4E5C1000BC188 /* MacVideoCapSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MacVideoCapSession.h; sourceTree = "<group>"; };
 		6DFAA9151BD51F75000BC188 /* MacLog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MacLog.cpp; path = MacAVCaptureVideo/Utils/MacLog.cpp; sourceTree = "<group>"; };
 		6DFAA9161BD51F75000BC188 /* MacLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacLog.h; path = MacAVCaptureVideo/Utils/MacLog.h; sourceTree = "<group>"; };
+		6DFAA91B1BD5E6B9000BC188 /* MacDatatypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MacDatatypes.h; path = MacAVCaptureVideo/Utils/MacDatatypes.h; sourceTree = "<group>"; };
+		6DFAA91C1BD5F164000BC188 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DFAA91D1BD5F164000BC188 /* CoreFoundation.framework in Frameworks */,
 				6DFAA9011BD4DA17000BC188 /* CoreMedia.framework in Frameworks */,
 				6DFAA8FF1BD4DA0A000BC188 /* CoreVideo.framework in Frameworks */,
 				6DFAA8FD1BD4D9E4000BC188 /* AVFoundation.framework in Frameworks */,
@@ -144,6 +148,7 @@
 		6DFAA90A1BD4DB05000BC188 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6DFAA91C1BD5F164000BC188 /* CoreFoundation.framework */,
 				6DFAA9001BD4DA17000BC188 /* CoreMedia.framework */,
 				6DFAA8FE1BD4DA0A000BC188 /* CoreVideo.framework */,
 				6DFAA8FC1BD4D9E4000BC188 /* AVFoundation.framework */,
@@ -154,6 +159,7 @@
 		6DFAA9191BD51F8D000BC188 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				6DFAA91B1BD5E6B9000BC188 /* MacDatatypes.h */,
 				6DFAA9161BD51F75000BC188 /* MacLog.h */,
 				6DFAA9151BD51F75000BC188 /* MacLog.cpp */,
 			);

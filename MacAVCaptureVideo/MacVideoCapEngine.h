@@ -9,6 +9,7 @@
 #ifndef MacAVCaptureVideo_MacVideoCapEngine_h
 #define MacAVCaptureVideo_MacVideoCapEngine_h
 
+#include "MacDatatypes.h"
 #include "MacVideoCapSession.h"
 
 class CMacAVVideoCapEngine : public IMacAVVideoCapSessionSink {
