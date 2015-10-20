@@ -26,6 +26,7 @@
 
     NSAlert *m_alert;
 }
+
 @property (assign) IBOutlet NSPopUpButton *itmVideoFormat;
 - (IBAction)selectVideoFormat:(id)sender;
 
@@ -35,13 +36,8 @@
 @property (assign) IBOutlet NSTextField *lblFPS;
 @property (assign) IBOutlet NSTextField *tfFPS;
 
-@property (assign) IBOutlet NSTextField *tfDumpFile;
-
 @property (assign) IBOutlet NSButton *btnStart;
-- (IBAction)startCapture:(id)sender;
-
-@property (assign) IBOutlet NSButton *btnStop;
-- (IBAction)stopCapture:(id)sender;
+- (IBAction)buttonClicked:(id)sender;
 
 @end
 

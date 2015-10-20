@@ -669,11 +669,11 @@
             <objects>
                 <viewController id="XfG-lQ-9wD" customClass="ViewController" sceneMemberID="viewController">
                     <customView key="view" wantsLayer="YES" id="Gt8-JT-T9P">
-                        <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="320"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VFn-Ub-tVn">
-                                <rect key="frame" x="64" y="323" width="98" height="17"/>
+                                <rect key="frame" x="64" y="283" width="98" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Video Format" id="q5I-qJ-9EW">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -681,7 +681,7 @@
                                 </textFieldCell>
                             </textField>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6lE-SP-6Jf">
-                                <rect key="frame" x="166" y="318" width="247" height="26"/>
+                                <rect key="frame" x="166" y="278" width="247" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="1Zv-zC-zgO" id="bb1-lg-dEF">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -698,7 +698,7 @@
                                 </connections>
                             </popUpButton>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dg0-Q9-MKN">
-                                <rect key="frame" x="62" y="298" width="100" height="17"/>
+                                <rect key="frame" x="62" y="258" width="100" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Session Preset" id="dX3-cY-LLE">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -706,7 +706,7 @@
                                 </textFieldCell>
                             </textField>
                             <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uOe-Q1-cD4">
-                                <rect key="frame" x="166" y="293" width="247" height="26"/>
+                                <rect key="frame" x="166" y="253" width="247" height="26"/>
                                 <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="YRs-MT-mFU" id="lQE-EI-GLo">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="menu"/>
@@ -723,7 +723,7 @@
                                 </connections>
                             </popUpButton>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Iuj-Gt-XFh">
-                                <rect key="frame" x="62" y="264" width="66" height="17"/>
+                                <rect key="frame" x="62" y="224" width="74" height="17"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="FPS:1-30" placeholderString="FPS" id="MrM-Rk-cYo">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -731,7 +731,7 @@
                                 </textFieldCell>
                             </textField>
                             <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DVG-75-qsS">
-                                <rect key="frame" x="132" y="262" width="34" height="22"/>
+                                <rect key="frame" x="142" y="222" width="34" height="22"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="center" placeholderString="30" drawsBackground="YES" id="oYK-T2-1cO">
                                     <font key="font" metaFont="system"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -741,56 +741,29 @@
                                     <action selector="selectFPS:" target="XfG-lQ-9wD" id="V0S-Az-1bH"/>
                                 </connections>
                             </textField>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FOt-ma-fi1">
-                                <rect key="frame" x="172" y="265" width="80" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="DumpFile" placeholderString="DumpFile" id="20W-Vl-uYQ">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cNa-vN-ziD">
-                                <rect key="frame" x="248" y="262" width="162" height="22"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="~/outputVideo.h264" drawsBackground="YES" id="iht-wY-G5S">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wza-tX-oQj">
-                                <rect key="frame" x="90" y="221" width="82" height="32"/>
-                                <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UbL-u5-4rZ">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="startCapture:" target="XfG-lQ-9wD" id="fce-gH-pC8"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pXg-BS-MSD">
-                                <rect key="frame" x="262" y="221" width="82" height="32"/>
-                                <buttonCell key="cell" type="push" title="Stop" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Jxj-mB-uiv">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="stopCapture:" target="XfG-lQ-9wD" id="1Tk-al-w4e"/>
-                                </connections>
-                            </button>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lq0-bF-6AC">
-                                <rect key="frame" x="80" y="20" width="320" height="180"/>
+                                <rect key="frame" x="80" y="24" width="320" height="180"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="cEl-pp-bCW"/>
                             </imageView>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wza-tX-oQj">
+                                <rect key="frame" x="240" y="215" width="123" height="32"/>
+                                <buttonCell key="cell" type="push" title="Start Capture" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UbL-u5-4rZ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="buttonClicked:" target="XfG-lQ-9wD" id="b1C-PZ-08a"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </customView>
                     <connections>
-                        <outlet property="btnStart" destination="wza-tX-oQj" id="NF2-h6-CQY"/>
+                        <outlet property="btnStart" destination="wza-tX-oQj" id="KJW-Ut-Hsv"/>
                         <outlet property="itmSessionPreset" destination="uOe-Q1-cD4" id="d9q-56-upT"/>
                         <outlet property="itmVideoFormat" destination="6lE-SP-6Jf" id="WfA-OI-CkS"/>
                         <outlet property="itmVideoPreset" destination="uOe-Q1-cD4" id="XRq-id-cvy"/>
                         <outlet property="lblFPS" destination="Iuj-Gt-XFh" id="Qq5-TU-gAG"/>
                         <outlet property="selectSessionPreset" destination="uOe-Q1-cD4" id="LYa-2h-vuV"/>
-                        <outlet property="tfDumpFile" destination="cNa-vN-ziD" id="5tY-OF-WSz"/>
                         <outlet property="tfFPS" destination="DVG-75-qsS" id="UqN-Ho-Z7l"/>
                         <outlet property="viewPreview" destination="Lq0-bF-6AC" id="SfX-Jp-UwZ"/>
                     </connections>

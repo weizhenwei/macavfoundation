@@ -20,9 +20,7 @@
 @synthesize itmSessionPreset;
 @synthesize lblFPS;
 @synthesize tfFPS;
-@synthesize tfDumpFile;
 @synthesize btnStart;
-@synthesize btnStop;
 
 - (long)setupCaptureDevice {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -151,11 +149,19 @@
     return MAC_S_OK;
 }
 
+- (long)setupButton {
+    [btnStart setEnabled:true];
+    [btnStart setTitle:@"Start Capture"];
+
+    return MAC_S_OK;
+}
+
 - (void)setupAlert {
     m_alert = [[NSAlert alloc] init];
     [m_alert addButtonWithTitle:@"OK"];
     [m_alert setAlertStyle:NSWarningAlertStyle];
 }
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -175,7 +181,7 @@
     if (MAC_S_OK != [self setupFPS]) {
         return;
     }
-
+    [self setupButton];
     [self setupAlert];
 
     m_pVideoCapEngine = new CMacAVVideoCapEngine();
@@ -192,22 +198,6 @@
     [super setRepresentedObject:representedObject];
 
     // Update the view, if already loaded.
-}
-
-- (IBAction)startCapture:(id)sender {
-    int iFPS = [tfFPS intValue];
-    NSString *strDumpFile = [tfDumpFile stringValue];
-
-    MAC_LOG_INFO("ViewController::startCapture(), FPS = " << iFPS
-                 << ", Dump File = " << strDumpFile.UTF8String);
-}
-
-- (IBAction)stopCapture:(id)sender {
-    int iFPS = [tfFPS intValue];
-    NSString *strDumpFile = [tfDumpFile stringValue];
-
-    MAC_LOG_INFO("ViewController::startCapture(), FPS = " << iFPS
-                 << ", Dump File = " << strDumpFile.UTF8String);
 }
 
 - (IBAction)selectVideoFormat:(id)sender {
@@ -264,6 +254,32 @@
         tfFPS.placeholderString = [NSString stringWithFormat:@"%d", (int)m_fMaxFPS];
     } else {
         m_fSelectedFPS = intValue;
+    }
+}
+
+- (long)saveVideoFile {
+    NSSavePanel *panel = [NSSavePanel savePanel];
+    [panel setNameFieldStringValue:@"Untitle.h264"];
+    [panel setMessage:@"Choose the path to save the video file"];
+    [panel setAllowsOtherFileTypes:NO];
+    [panel setAllowedFileTypes:@[@"h264"]];
+    [panel setExtensionHidden:NO];
+    [panel setCanCreateDirectories:YES];
+    [panel runModal];
+
+    return MAC_S_OK;
+}
+
+- (IBAction)buttonClicked:(id)sender {
+    NSButton *btn = sender;
+    NSString *btnTitle = [btn title];
+    if ([btnTitle isEqualToString:@"Start Capture"]) {
+        MAC_LOG_INFO("ViewController::buttonClicked(), start capture video.");
+        [btn setTitle:@"Stop Capture"];
+    } else if ([btnTitle isEqualToString:@"Stop Capture"]) {
+        MAC_LOG_INFO("ViewController::buttonClicked(), stop capture video.");
+        [self saveVideoFile];
+        [btn setTitle:@"Start Capture"];
     }
 }
 
