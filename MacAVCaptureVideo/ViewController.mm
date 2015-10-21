@@ -23,6 +23,7 @@
 @synthesize btnStart;
 @synthesize ivPreviewView;
 
+#pragma mark Init Setup
 - (long)setupCaptureDevice {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     if (nil == device) {
@@ -240,6 +241,8 @@
     // Update the view, if already loaded.
 }
 
+
+#pragma mark UI Response
 - (IBAction)selectVideoFormat:(id)sender {
     NSPopUpButton *btnVideoFormat = sender;
     NSString *strSelectedFormat = [btnVideoFormat titleOfSelectedItem];
@@ -253,6 +256,12 @@
         return;
     }
     m_pSelectedVideoFormat = iter->second;
+    m_capSessionFormat.capFormat = m_pSelectedVideoFormat;
+    
+    if (MAC_S_OK != m_pVideoCapEngine->UpdateAVCaptureDeviceFormat(m_pSelectedVideoFormat)) {
+        MAC_LOG_ERROR("ViewController::selectVideoFormat(), "
+                      << "couldn't update video format in capture engine!");
+    }
 }
 
 - (IBAction)selectSessionPreset:(id)sender {
@@ -267,6 +276,12 @@
         return;
     }
     m_pSelectedSessionPreset = strSelectedSessionPreset;
+
+    m_capSessionFormat.capSessionPreset = m_pSelectedSessionPreset;
+    if (MAC_S_OK != m_pVideoCapEngine->UpdateAVCaptureSessionPreset(m_pSelectedSessionPreset)) {
+        MAC_LOG_ERROR("ViewController::selectSessionPreset(), "
+                      << "couldn't update session preset in capture engine!");
+    }
 }
 
 // overwrite NSTextFieldDelegate method;
@@ -292,8 +307,13 @@
         [m_alert runModal];
         tfFPS.stringValue = @"";
         tfFPS.placeholderString = [NSString stringWithFormat:@"%d", (int)m_fMaxFPS];
-    } else {
-        m_fSelectedFPS = intValue;
+        return;
+    }
+
+    m_fSelectedFPS = intValue;
+    m_capSessionFormat.capFPS = m_fSelectedFPS;
+    if (MAC_S_OK != m_pVideoCapEngine->UpdateAVCaptureSessionFPS(m_fSelectedFPS)) {
+        MAC_LOG_ERROR("ViewController::selectFPS(),couldn't update FPS in capture engine!");
     }
 }
 

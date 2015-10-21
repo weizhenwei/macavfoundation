@@ -43,6 +43,11 @@ class IMacAVVideoCapSessionSink;
 - (long)stopRun;
 - (void)captureCleanup;
 
+// update series
+- (long)updateAVCaptureDeviceFormat:(AVCaptureDeviceFormat *)format;
+- (long)updateAVCaptureSessionPreset:(NSString *)preset;
+- (long)updateAVCaptureSessionFPS:(float)fps;
+
 - (long)setCapSessionFormat:(MACCaptureSessionFormat&)format;
 - (long)getCapSessionFormat:(MACCaptureSessionFormat&)format;
 @end

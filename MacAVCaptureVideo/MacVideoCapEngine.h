@@ -25,6 +25,11 @@ public:
     long Start(MACCaptureSessionFormat &capSessionFormat);
     long Stop();
     
+    // update series;
+    long UpdateAVCaptureDeviceFormat(AVCaptureDeviceFormat *format);
+    long UpdateAVCaptureSessionPreset(NSString *preset);
+    long UpdateAVCaptureSessionFPS(float fps);
+
     int DeliverVideoData(VideoRawDataPack* pVideoPack);
     
     // IMacAVVideoCapSessionSink

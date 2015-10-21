@@ -81,6 +81,21 @@ long CMacAVVideoCapEngine::Stop()
     return [m_pVideoCapSession stopRun];
 }
 
+long CMacAVVideoCapEngine::UpdateAVCaptureDeviceFormat(AVCaptureDeviceFormat *format)
+{
+    m_capSessionFormat.capFormat = format;
+    return [m_pVideoCapSession updateAVCaptureDeviceFormat:format];
+}
+long CMacAVVideoCapEngine::UpdateAVCaptureSessionPreset(NSString *preset)
+{
+    m_capSessionFormat.capSessionPreset = preset;
+    return [m_pVideoCapSession updateAVCaptureSessionPreset:preset];
+}
+long CMacAVVideoCapEngine::UpdateAVCaptureSessionFPS(float fps)
+{
+    m_capSessionFormat.capFPS = fps;
+    return [m_pVideoCapSession updateAVCaptureSessionFPS:fps];
+}
 
 int CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
 {

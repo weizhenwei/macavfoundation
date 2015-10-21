@@ -230,6 +230,61 @@ static void capture_cleanup(void* p)
     [self release];
 }
 
+- (long)updateAVCaptureDeviceFormat:(AVCaptureDeviceFormat *)format {
+    m_format.capFormat = format;
+
+    [m_captureSession commitConfiguration];
+    NSError *error = nil;
+    if ([m_videoCaptureDevice lockForConfiguration:&error]) {
+        [m_videoCaptureDevice setActiveFormat:m_format.capFormat];
+        [m_videoCaptureDevice unlockForConfiguration];
+    } else {
+        NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
+        MAC_LOG_ERROR("CMacAVVideoCapSession::updateAVCaptureDeviceFormat():" << [errorString UTF8String]);
+        [errorString release];
+        return MAC_S_FALSE;
+    }
+
+    MacVideoOutputFormat videoOutputFormat = [self getVideoOutputFormat];
+    [m_videoCaptureDataOutput setVideoSettings:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                [NSNumber numberWithInt: videoOutputFormat.video_type],
+                                                kCVPixelBufferPixelFormatTypeKey,
+                                                [NSNumber numberWithInt: videoOutputFormat.width],
+                                                (id)kCVPixelBufferWidthKey,
+                                                [NSNumber numberWithInt: videoOutputFormat.height],
+                                                (id)kCVPixelBufferHeightKey,
+                                                AVVideoScalingModeFit,
+                                                (id)AVVideoScalingModeKey,
+                                                nil]];
+
+    [m_captureSession commitConfiguration];
+
+    return MAC_S_OK;
+}
+- (long)updateAVCaptureSessionPreset:(NSString *)preset {
+    m_format.capSessionPreset = preset;
+    [m_captureSession beginConfiguration];
+    [m_captureSession setSessionPreset: m_format.capSessionPreset];
+    [m_captureSession commitConfiguration];
+
+    return MAC_S_OK;
+}
+- (long)updateAVCaptureSessionFPS:(float)fps {
+    m_format.capFPS = fps;
+    [m_captureSession beginConfiguration];
+    NSArray *connections = [m_videoCaptureDataOutput connections];
+    NSUInteger connectionCount = [connections count];
+    if (connectionCount > 0) {
+        id connection = [connections objectAtIndex:0];
+        if (YES == [connection isVideoMinFrameDurationSupported]) {
+            [connection setVideoMinFrameDuration: CMTimeMakeWithSeconds(1.0 / m_format.capFPS, 10000)];
+        }
+    }
+    [m_captureSession commitConfiguration];
+
+    return MAC_S_OK;
+}
+
 
 // Y'CbCr 4:2:2 - yuvs: kCVPixelFormatType_422YpCbCr8_yuvs
 // Y'CbCr 4:2:2 - uyuv: kCVPixelFormatType_422YpCbCr8
