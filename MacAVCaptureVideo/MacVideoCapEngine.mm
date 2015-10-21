@@ -1,4 +1,3 @@
-//
 //  MacVideoCapEngine.m
 //  MacAVCaptureVideo
 //
@@ -61,29 +60,25 @@ CMacAVVideoCapSession *CMacAVVideoCapEngine::getAVVideoCapSession()
     return m_pVideoCapSession;
 }
 
-long CMacAVVideoCapEngine::Start()
+long CMacAVVideoCapEngine::Start(MACCaptureSessionFormat &capSessionFormat)
 {
-    if(YES == [m_pVideoCapSession isRunning])
-    {
+    if (YES == [m_pVideoCapSession isRunning]) {
+        MAC_LOG_ERROR("CMacAVVideoCapEngine::Start(), AVCaptureSession is already running.");
         return MAC_S_FALSE;
     }
-    
-    long lResult = MAC_E_VIDEO_CAMERA_FAIL;
-    if (0 == [m_pVideoCapSession startRun]) {
-        lResult = MAC_S_OK;
+
+    m_capSessionFormat = capSessionFormat;
+    if ([m_pVideoCapSession startRun:m_capSessionFormat] != MAC_S_OK) {
+        MAC_LOG_ERROR("CMacAVVideoCapEngine::Start(), AVCaptureSession start failed!");
+        return MAC_S_FALSE;
     }
-    
-    return lResult;
+
+    return MAC_S_OK;
 }
 
 long CMacAVVideoCapEngine::Stop()
 {
-    long lResult = MAC_E_FAIL;
-    if (0 == [m_pVideoCapSession stopRun]) {
-        lResult = MAC_S_OK;
-    }
-    
-    return lResult;
+    return [m_pVideoCapSession stopRun];
 }
 
 

@@ -694,7 +694,7 @@
                                     </menu>
                                 </popUpButtonCell>
                                 <connections>
-                                    <action selector="selectVideoFormat:" target="XfG-lQ-9wD" id="khi-6N-lJP"/>
+                                    <action selector="selectVideoFormat:" target="XfG-lQ-9wD" id="leL-v0-A0h"/>
                                 </connections>
                             </popUpButton>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dg0-Q9-MKN">
@@ -737,14 +737,7 @@
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
-                                <connections>
-                                    <action selector="selectFPS:" target="XfG-lQ-9wD" id="V0S-Az-1bH"/>
-                                </connections>
                             </textField>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lq0-bF-6AC">
-                                <rect key="frame" x="80" y="24" width="320" height="180"/>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="cEl-pp-bCW"/>
-                            </imageView>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wza-tX-oQj">
                                 <rect key="frame" x="240" y="215" width="123" height="32"/>
                                 <buttonCell key="cell" type="push" title="Start Capture" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="UbL-u5-4rZ">
@@ -755,18 +748,19 @@
                                     <action selector="buttonClicked:" target="XfG-lQ-9wD" id="b1C-PZ-08a"/>
                                 </connections>
                             </button>
+                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lq0-bF-6AC">
+                                <rect key="frame" x="80" y="24" width="320" height="180"/>
+                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="cEl-pp-bCW"/>
+                            </imageView>
                         </subviews>
                     </customView>
                     <connections>
                         <outlet property="btnStart" destination="wza-tX-oQj" id="KJW-Ut-Hsv"/>
                         <outlet property="itmSessionPreset" destination="uOe-Q1-cD4" id="d9q-56-upT"/>
-                        <outlet property="itmVideoFormat" destination="6lE-SP-6Jf" id="WfA-OI-CkS"/>
-                        <outlet property="itmVideoPreset" destination="uOe-Q1-cD4" id="XRq-id-cvy"/>
+                        <outlet property="itmVideoFormat" destination="6lE-SP-6Jf" id="NCd-mI-F4m"/>
                         <outlet property="ivPreviewView" destination="Lq0-bF-6AC" id="7Zv-k7-nqF"/>
                         <outlet property="lblFPS" destination="Iuj-Gt-XFh" id="Qq5-TU-gAG"/>
-                        <outlet property="selectSessionPreset" destination="uOe-Q1-cD4" id="LYa-2h-vuV"/>
                         <outlet property="tfFPS" destination="DVG-75-qsS" id="UqN-Ho-Z7l"/>
-                        <outlet property="viewPreview" destination="Lq0-bF-6AC" id="SfX-Jp-UwZ"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

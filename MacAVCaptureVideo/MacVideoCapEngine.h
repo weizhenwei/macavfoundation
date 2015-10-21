@@ -22,7 +22,7 @@ public:
 
     CMacAVVideoCapSession *getAVVideoCapSession();
     
-    long Start();
+    long Start(MACCaptureSessionFormat &capSessionFormat);
     long Stop();
     
     int DeliverVideoData(VideoRawDataPack* pVideoPack);

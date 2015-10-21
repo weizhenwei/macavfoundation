@@ -165,16 +165,31 @@
 
 - (long)setupPreviewLayer {
     AVCaptureSession *captureSession = [m_pVideoCapEngine->getAVVideoCapSession() getAVCaptureSesion];
+    [captureSession beginConfiguration];
     AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
-    [ivPreviewView.layer addSublayer:previewLayer];
+    [previewLayer setAutoresizingMask:kCALayerWidthSizable | kCALayerHeightSizable];
     previewLayer.frame = ivPreviewView.bounds;
+    CGRect bounds = ivPreviewView.layer.bounds;
+    previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    previewLayer.bounds = bounds;
+    previewLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
     [ivPreviewView.layer addSublayer:previewLayer];
+    [captureSession commitConfiguration];
     
     return MAC_S_OK;
 }
 
+- (void)setupSessionFormat {
+    m_capSessionFormat.capDevice = m_pVideoCaptureDevice;
+    m_capSessionFormat.capFormat = m_pSelectedVideoFormat;
+    m_capSessionFormat.capSessionPreset = m_pSelectedSessionPreset;
+    m_capSessionFormat.capFPS = m_fSelectedFPS;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[self view] setAutoresizingMask:NSViewNotSizable];
 
     // Do any additional setup after loading the view.
     MAC_LOG_INFO("ViewController::viewDidLoad()");
@@ -193,12 +208,8 @@
     }
     [self setupButton];
     [self setupAlert];
-    
-    m_capSessionFormat.capDevice = m_pVideoCaptureDevice;
-    m_capSessionFormat.capFormat = m_pSelectedVideoFormat;
-    m_capSessionFormat.capSessionPreset = m_pSelectedSessionPreset;
-    m_capSessionFormat.capFPS = m_fSelectedFPS;
-    
+    [self setupSessionFormat];
+
     m_pVideoCapEngine = new CMacAVVideoCapEngine();
     if (NULL == m_pVideoCapEngine) {
         MAC_LOG_ERROR("ViewController::viewDidLoad(), new CMacAVVideoCapEngine failed!");
@@ -208,10 +219,10 @@
         MAC_LOG_ERROR("ViewController::viewDidLoad(), CMacAVVideoCapEngine::Init() failed!");
         return;
     }
-    
-    if (MAC_S_OK != [self setupPreviewLayer]) {
-        return;
-    }
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setupPreviewLayer];
+    });
 }
 
 - (void)dealloc {
@@ -284,6 +295,18 @@
     }
 }
 
+- (long)startCapture {
+    MAC_CHECK_NOTNULL(m_pVideoCapEngine);
+    [self setupSessionFormat];
+    long ret = m_pVideoCapEngine->Start(m_capSessionFormat);
+    if (ret != MAC_S_OK) {
+        MAC_LOG_ERROR("ViewController::startCapture(), start VideoCapEngine failed!");
+        return MAC_S_FALSE;
+    }
+
+    return MAC_S_OK;
+}
+
 - (long)saveVideoFile {
     NSSavePanel *panel = [NSSavePanel savePanel];
     [panel setNameFieldStringValue:@"Untitle.h264"];
@@ -297,15 +320,26 @@
     return MAC_S_OK;
 }
 
+- (long)stopCapture {
+    long ret = m_pVideoCapEngine->Stop();
+    if (ret != MAC_S_OK) {
+        MAC_LOG_ERROR("ViewController::stopCapture(), stop VideoCapEngine failed!");
+        return MAC_S_FALSE;
+    }
+    return MAC_S_OK;
+}
+
 - (IBAction)buttonClicked:(id)sender {
     NSButton *btn = sender;
     NSString *btnTitle = [btn title];
     if ([btnTitle isEqualToString:@"Start Capture"]) {
         MAC_LOG_INFO("ViewController::buttonClicked(), start capture video.");
+        [self startCapture];
         [btn setTitle:@"Stop Capture"];
     } else if ([btnTitle isEqualToString:@"Stop Capture"]) {
         MAC_LOG_INFO("ViewController::buttonClicked(), stop capture video.");
-        [self saveVideoFile];
+        // [self saveVideoFile];
+        [self stopCapture];
         [btn setTitle:@"Start Capture"];
     }
 }

@@ -59,23 +59,15 @@ static void capture_cleanup(void* p)
 
 - (long)setCapSessionFormat:(MACCaptureSessionFormat&)format
 {
+    m_format = format;
     m_videoCaptureDevice = format.capDevice;
-    [m_videoCaptureDevice retain];
-    m_format.capDevice = format.capDevice;
-    m_format.capFormat = format.capFormat;
-    m_format.capSessionPreset = format.capSessionPreset;
-    m_format.capFPS = format.capFPS;
 
     return MAC_S_OK;
 }
 
 - (long)getCapSessionFormat:(MACCaptureSessionFormat&)format
 {
-    format.capDevice = m_videoCaptureDevice;
-    format.capDevice = m_format.capDevice;
-    format.capFormat = m_format.capFormat;
-    format.capSessionPreset = m_format.capSessionPreset;
-    format.capFPS = m_format.capFPS;
+    format = m_format;
 
     return MAC_S_OK;
 }
@@ -104,40 +96,42 @@ static void capture_cleanup(void* p)
     [m_sinkLock unlock];
 }
 
-- (int)createVideoInputAndOutput
+- (long)createVideoInputAndOutput
 {
-    if(NULL == m_captureSession) {
-        return MAC_E_POINTER;
+    if (nil == m_captureSession) {
+        MAC_LOG_ERROR("CMacAVVideoCapSession::createVideoInputAndOutput(), AVCaptureSession is nil.");
+        return MAC_S_FALSE;
     }
     
-    int result = MAC_S_OK;
+    long result = MAC_S_OK;
     [m_captureSession beginConfiguration];
     do {
-        NSError *error = NULL;
-        
-        if (NULL != m_videoCaptureInput) {
+        NSError *error = nil;
+
+        if (nil != m_videoCaptureInput) {
             [m_captureSession removeInput:m_videoCaptureInput];
             [m_videoCaptureInput release];
         }
-        
+
         m_videoCaptureInput =
-        [[NSClassFromString(@"AVCaptureDeviceInput") alloc] initWithDevice:m_videoCaptureDevice error:&error];
-        if (NULL != m_videoCaptureInput) {
+        [[AVCaptureDeviceInput alloc] initWithDevice:m_format.capDevice error:&error];
+        if (nil != m_videoCaptureInput) {
             [m_captureSession addInput:m_videoCaptureInput];
         } else {
             NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
+            MAC_LOG_ERROR("CMacAVVideoCapSession::createVideoInputAndOutput():" << [errorString UTF8String]);
             [errorString release];
-            result = MAC_E_POINTER;
+            result = MAC_S_FALSE;
             break;
         }
-        
-        if (NULL == m_videoCaptureDataOutput) {
-            m_videoCaptureDataOutput = [[NSClassFromString(@"AVCaptureVideoDataOutput") alloc] init];
-            if (NULL != m_videoCaptureDataOutput) {
-                dispatch_queue_t macAVCaptureQueue = dispatch_queue_create("MacAVCaptureQueue", NULL);
+
+        if (nil == m_videoCaptureDataOutput) {
+            m_videoCaptureDataOutput = [[AVCaptureVideoDataOutput alloc] init];
+            if (nil != m_videoCaptureDataOutput) {
+                dispatch_queue_t macAVCaptureQueue = dispatch_queue_create("MacAVCaptureQueue", nil);
                 dispatch_set_context(macAVCaptureQueue, [self retain]);
                 dispatch_set_finalizer_f(macAVCaptureQueue, capture_cleanup);
-                
+
                 [m_videoCaptureDataOutput setSampleBufferDelegate:self queue:macAVCaptureQueue];
                 dispatch_release(macAVCaptureQueue);
                 [m_captureSession addOutput:m_videoCaptureDataOutput];
@@ -145,17 +139,17 @@ static void capture_cleanup(void* p)
                 break;
             }
         }
-        
+
         NSArray *connections = [m_videoCaptureDataOutput connections];
         NSUInteger connectionCount = [connections count];
         if (connectionCount > 0) {
             id connection = [connections objectAtIndex:0];
-            
+
             // get orientation
             m_videoOrientation = [connection videoOrientation];
         }
     } while(0);
-    
+
     [m_captureSession commitConfiguration];
     
     return result;
@@ -164,18 +158,18 @@ static void capture_cleanup(void* p)
 - (int)destroyVideoInputAndOutput
 {
     [m_captureSession beginConfiguration];
-    
+
     [m_captureSession removeInput:m_videoCaptureInput];
     [m_videoCaptureInput release];
     m_videoCaptureInput = nil;
-    
+
     [m_captureSession removeOutput:m_videoCaptureDataOutput];
     [m_videoCaptureDataOutput setSampleBufferDelegate:NULL queue:NULL];
     [m_videoCaptureDataOutput release];
     m_videoCaptureDataOutput = NULL;
-    
+
     [m_captureSession commitConfiguration];
-    
+
     return MAC_S_OK;
 }
 
@@ -184,25 +178,34 @@ static void capture_cleanup(void* p)
     return [m_captureSession isRunning];
 }
 
-- (long)startRun
+- (long)startRun:(MACCaptureSessionFormat&)format
 {
-    if (YES == [m_captureSession isRunning]) {
+    m_format = format;
+    if (nil == m_captureSession) {
+        MAC_LOG_ERROR("CMacAVVideoCapSession::startRun(), AVCaptureSession is nil.");
         return MAC_S_FALSE;
     }
-    
-    int result = [self createVideoInputAndOutput];
-    if(MAC_S_OK == result) {
-        [self updateVideoFormat];
-    } else {
+    if (YES == [m_captureSession isRunning]) {
+        MAC_LOG_ERROR("CMacAVVideoCapSession::startRun(), AVCaptureSession is already running.");
+        return MAC_S_FALSE;
+    }
+
+    long result = [self createVideoInputAndOutput];
+    if (MAC_S_OK != result) {
+        return result;
+    }
+    result = [self updateVideoFormat];
+    if (MAC_S_OK != result) {
         return result;
     }
     
     [m_captureSession startRunning];
     if (NO == [m_captureSession isRunning]) {
         [self destroyVideoInputAndOutput];
+        MAC_LOG_ERROR("CMacAVVideoCapSession::startRun(), AVCaptureSession couldn't start running.");
         return MAC_S_FALSE;
     }
-    
+
     return MAC_S_OK;
 }
 
@@ -215,9 +218,10 @@ static void capture_cleanup(void* p)
     [m_captureSession stopRunning];
     [self destroyVideoInputAndOutput];
     if (YES == [m_captureSession isRunning]) {
-        return MAC_E_FAIL;
+        MAC_LOG_ERROR("CMacAVVideoCapSession::stopRun(), AVCaptureSession couldn't stop running.");
+        return MAC_S_FALSE;
     }
-    
+
     return MAC_S_OK;
 }
 
@@ -228,24 +232,12 @@ static void capture_cleanup(void* p)
 
 - (long)updateVideoFormat
 {
-#if 0
-    if (MacYUY2 != m_videoFormat.video_type
-        && MacARGB32 != m_videoFormat.video_type
-        && MacBGRA32 != m_videoFormat.video_type) {
-        return MAC_E_INVALIDARG;
+    if (nil == m_captureSession
+        || nil == m_videoCaptureDataOutput) {
+        MAC_LOG_ERROR("CMacAVVideoCapSession::updateVideoFormat(), "
+                      << "m_captureSession == nil || m_videoCaptureDataOutput == nil.");
     }
-    
-    if (m_videoFormat.width <= 0
-        || m_videoFormat.height <= 0
-        || m_videoFormat.frame_rate <= 0) {
-        return MAC_E_INVALIDARG;
-    }
-    
-    if (NULL == m_captureSession
-        || NULL == m_videoCaptureDataOutput) {
-        return MAC_E_POINTER;
-    }
-    
+
     [m_captureSession beginConfiguration];
     
     // set max frame rate
@@ -254,47 +246,36 @@ static void capture_cleanup(void* p)
     if (connectionCount > 0) {
         id connection = [connections objectAtIndex:0];
         if (YES == [connection isVideoMinFrameDurationSupported]) {
-            [connection setVideoMinFrameDuration: CMTimeMakeWithSeconds(1.0 / m_videoFormat.frame_rate, 10000)];
+            [connection setVideoMinFrameDuration: CMTimeMakeWithSeconds(1.0 / m_format.capFPS, 10000)];
         }
     }
+    [m_captureSession setSessionPreset: m_format.capSessionPreset];
     
-    NSString *sessionPreset = AVCaptureSessionPreset640x480;
-    if (m_videoFormat.width <= 320 && m_videoFormat.height <= 240) {
-        sessionPreset = AVCaptureSessionPreset320x240;
-    } else if (m_videoFormat.width <= 352 && m_videoFormat.height <= 288) {
-        sessionPreset = AVCaptureSessionPreset352x288;
-    } else if (m_videoFormat.width <= 640 && m_videoFormat.height <= 480) {
-        sessionPreset = AVCaptureSessionPreset640x480;
-    } else if (m_videoFormat.width <= 960 && m_videoFormat.height <= 540) {
-        sessionPreset = AVCaptureSessionPreset960x540;
-    } else if (m_videoFormat.width <= 1280 && m_videoFormat.height <= 720) {
-        sessionPreset = AVCaptureSessionPreset1280x720;
+    NSError *error = nil;
+    if ([m_videoCaptureDevice lockForConfiguration:&error]) {
+        [m_videoCaptureDevice setActiveFormat:m_format.capFormat];
+        [m_videoCaptureDevice unlockForConfiguration];
     } else {
-        sessionPreset = AVCaptureSessionPresetHigh;
+        NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
+        MAC_LOG_ERROR("CMacAVVideoCapSession::updateVideoFormat():" << [errorString UTF8String]);
+        [errorString release];
+        return MAC_S_FALSE;
     }
-    [m_captureSession setSessionPreset: sessionPreset];
-    
-    // set video type
-    unsigned int pixelFormat = kCVPixelFormatType_422YpCbCr8_yuvs;
-    if (MacYUY2 == m_videoFormat.video_type) {
-        pixelFormat = kCVPixelFormatType_422YpCbCr8_yuvs;
-    } else if (MacARGB32 == m_videoFormat.video_type) {
-        pixelFormat = kCVPixelFormatType_32ARGB;
-    } else if (MacBGRA32 == m_videoFormat.video_type) {
-        pixelFormat = kCVPixelFormatType_32BGRA;
-    }
-    
-    [m_videoCaptureDataOutput setVideoSettings:nil];
-    NSMutableDictionary* videoSettings = [NSMutableDictionary dictionaryWithCapacity:0];
-    [videoSettings addEntriesFromDictionary:[m_videoCaptureDataOutput videoSettings]];
-    [videoSettings setObject:[NSNumber numberWithUnsignedInt:pixelFormat]
-                      forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
-    [videoSettings setObject:AVVideoScalingModeResizeAspectFill forKey:AVVideoScalingModeKey];
-    [m_videoCaptureDataOutput setVideoSettings:videoSettings];
-    
+
+    // TODO: set the output settings;
+    [m_videoCaptureDataOutput setVideoSettings:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                [NSNumber numberWithInt:kCVPixelFormatType_32ARGB],
+                                                kCVPixelBufferPixelFormatTypeKey,
+                                                [NSNumber numberWithInt: 640],
+                                                (id)kCVPixelBufferWidthKey,
+                                                [NSNumber numberWithInt: 360],
+                                                (id)kCVPixelBufferHeightKey,
+                                                AVVideoScalingModeFit,
+                                                (id)AVVideoScalingModeKey,
+                                                nil]];
+
     [m_captureSession commitConfiguration];
-#endif
-    
+
     return MAC_S_OK;
 }
 
@@ -375,6 +356,7 @@ static void capture_cleanup(void* p)
 #endif
 
 
+#pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
 // Notes: the call back function will be called from capture thread.
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {

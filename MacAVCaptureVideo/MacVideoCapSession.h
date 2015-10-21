@@ -39,7 +39,7 @@ class IMacAVVideoCapSessionSink;
 - (void)setSink:(IMacAVVideoCapSessionSink*)sink;
 
 - (BOOL)isRunning;
-- (long)startRun;
+- (long)startRun:(MACCaptureSessionFormat&)format;
 - (long)stopRun;
 - (void)captureCleanup;
 
