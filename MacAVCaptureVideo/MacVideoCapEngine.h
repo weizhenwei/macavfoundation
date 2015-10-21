@@ -17,8 +17,10 @@ public:
     CMacAVVideoCapEngine();
     virtual ~CMacAVVideoCapEngine();
     
-    int Init(MacVideoFormat *format, NSString *deviceName);
+    long Init(MACCaptureSessionFormat &capSessioinFormat);
     void Uninit();
+
+    CMacAVVideoCapSession *getAVVideoCapSession();
     
     long Start();
     long Stop();
@@ -30,8 +32,7 @@ public:
     
 private:
     CMacAVVideoCapSession*  m_pVideoCapSession;
-    MacVideoFormat          m_videoFormat;
-    NSString*               m_pDeviceName;
+    MACCaptureSessionFormat m_capSessionFormat;
 };
 
 int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack &packet);

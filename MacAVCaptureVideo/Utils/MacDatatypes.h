@@ -55,6 +55,14 @@ typedef struct _video_format
     unsigned long   time_stamp;
 } MacVideoFormat;
 
+typedef struct _capsession_format
+{
+    AVCaptureDevice *capDevice;
+    AVCaptureDeviceFormat *capFormat;
+    NSString *capSessionPreset;
+    float capFPS;
+} MACCaptureSessionFormat;
+
 #define MAX_PLANE_COUNT	3
 #ifndef MAX_PLANAR_NUM
 #define MAX_PLANAR_NUM 4

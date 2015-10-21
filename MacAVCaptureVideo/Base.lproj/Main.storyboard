@@ -762,6 +762,7 @@
                         <outlet property="itmSessionPreset" destination="uOe-Q1-cD4" id="d9q-56-upT"/>
                         <outlet property="itmVideoFormat" destination="6lE-SP-6Jf" id="WfA-OI-CkS"/>
                         <outlet property="itmVideoPreset" destination="uOe-Q1-cD4" id="XRq-id-cvy"/>
+                        <outlet property="ivPreviewView" destination="Lq0-bF-6AC" id="7Zv-k7-nqF"/>
                         <outlet property="lblFPS" destination="Iuj-Gt-XFh" id="Qq5-TU-gAG"/>
                         <outlet property="selectSessionPreset" destination="uOe-Q1-cD4" id="LYa-2h-vuV"/>
                         <outlet property="tfFPS" destination="DVG-75-qsS" id="UqN-Ho-Z7l"/>

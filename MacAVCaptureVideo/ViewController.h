@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MacVideoCapEngine.h"
+#import "MacDatatypes.h"
 
 #include <map>
 
@@ -23,6 +24,8 @@
     NSString *m_pSelectedSessionPreset;
 
     float m_fMinFPS, m_fMaxFPS, m_fSelectedFPS;
+    
+    MACCaptureSessionFormat m_capSessionFormat;
 
     NSAlert *m_alert;
 }
@@ -38,6 +41,8 @@
 
 @property (assign) IBOutlet NSButton *btnStart;
 - (IBAction)buttonClicked:(id)sender;
+
+@property (assign) IBOutlet NSImageView *ivPreviewView;
 
 @end
 

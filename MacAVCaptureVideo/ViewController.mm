@@ -21,6 +21,7 @@
 @synthesize lblFPS;
 @synthesize tfFPS;
 @synthesize btnStart;
+@synthesize ivPreviewView;
 
 - (long)setupCaptureDevice {
     AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -162,6 +163,15 @@
     [m_alert setAlertStyle:NSWarningAlertStyle];
 }
 
+- (long)setupPreviewLayer {
+    AVCaptureSession *captureSession = [m_pVideoCapEngine->getAVVideoCapSession() getAVCaptureSesion];
+    AVCaptureVideoPreviewLayer *previewLayer = [AVCaptureVideoPreviewLayer layerWithSession:captureSession];
+    [ivPreviewView.layer addSublayer:previewLayer];
+    previewLayer.frame = ivPreviewView.bounds;
+    [ivPreviewView.layer addSublayer:previewLayer];
+    
+    return MAC_S_OK;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -183,8 +193,25 @@
     }
     [self setupButton];
     [self setupAlert];
-
+    
+    m_capSessionFormat.capDevice = m_pVideoCaptureDevice;
+    m_capSessionFormat.capFormat = m_pSelectedVideoFormat;
+    m_capSessionFormat.capSessionPreset = m_pSelectedSessionPreset;
+    m_capSessionFormat.capFPS = m_fSelectedFPS;
+    
     m_pVideoCapEngine = new CMacAVVideoCapEngine();
+    if (NULL == m_pVideoCapEngine) {
+        MAC_LOG_ERROR("ViewController::viewDidLoad(), new CMacAVVideoCapEngine failed!");
+        return;
+    }
+    if (MAC_S_OK !=m_pVideoCapEngine->Init(m_capSessionFormat)) {
+        MAC_LOG_ERROR("ViewController::viewDidLoad(), CMacAVVideoCapEngine::Init() failed!");
+        return;
+    }
+    
+    if (MAC_S_OK != [self setupPreviewLayer]) {
+        return;
+    }
 }
 
 - (void)dealloc {

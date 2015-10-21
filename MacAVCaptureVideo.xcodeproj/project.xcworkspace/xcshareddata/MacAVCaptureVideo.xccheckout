@@ -10,14 +10,14 @@
 	<string>MacAVCaptureVideo</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>E219C21011A23D7F5C22B0428E3D9648346AD211</key>
+		<key>CF0F186050AC0B714B64E29226174A0DD9E0034F</key>
 		<string>https://github.com/weizhenwei/MacAVCaptureVideo</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>MacAVCaptureVideo.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>E219C21011A23D7F5C22B0428E3D9648346AD211</key>
+		<key>CF0F186050AC0B714B64E29226174A0DD9E0034F</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E219C21011A23D7F5C22B0428E3D9648346AD211</string>
+	<string>CF0F186050AC0B714B64E29226174A0DD9E0034F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E219C21011A23D7F5C22B0428E3D9648346AD211</string>
+			<string>CF0F186050AC0B714B64E29226174A0DD9E0034F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MacAVCaptureVideo</string>
 		</dict>

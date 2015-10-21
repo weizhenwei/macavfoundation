@@ -15,12 +15,13 @@
 #import <CoreVideo/CVPixelBuffer.h>
 
 #import "MacVideoCapEngine.h"
+#import "MacLog.h"
 
 #pragma mark CMacAVVideoCapEngine
 
-CMacAVVideoCapEngine::CMacAVVideoCapEngine() : m_pVideoCapSession(NULL), m_pDeviceName(NULL)
+CMacAVVideoCapEngine::CMacAVVideoCapEngine() : m_pVideoCapSession(NULL)
 {
-    memset(&m_videoFormat, 0, sizeof(MacVideoFormat));
+    memset(&m_capSessionFormat , 0, sizeof(m_capSessionFormat));
 }
 
 CMacAVVideoCapEngine::~CMacAVVideoCapEngine()
@@ -28,38 +29,36 @@ CMacAVVideoCapEngine::~CMacAVVideoCapEngine()
     Uninit();
 }
 
-int CMacAVVideoCapEngine::Init(MacVideoFormat* format, NSString* deviceName)
+long CMacAVVideoCapEngine::Init(MACCaptureSessionFormat &capSessioinFormat)
 {
-    if(NULL == format) {
-        return FALSE;
+    m_capSessionFormat = capSessioinFormat;
+
+    if (nil == m_pVideoCapSession) {
+        m_pVideoCapSession = [[CMacAVVideoCapSession alloc] init];
     }
-    
-    m_pDeviceName = [NSString stringWithString:deviceName];
-    if (NULL == m_pDeviceName) {
-        return FALSE;
+    if (nil == m_pVideoCapSession) {
+        MAC_LOG_ERROR("MacVideoCapSession::init(), couldn't init AVCaptureSession.");
+        return MAC_S_FALSE;
     }
-    
-    if(NULL == m_pVideoCapSession) {
-        m_pVideoCapSession = [[CMacAVVideoCapSession alloc] initWithDeviceName:deviceName];
-    }
-    if (NULL == m_pVideoCapSession) {
-        return FALSE;
-    }
-    
+
     [m_pVideoCapSession setSink:this];
-    m_videoFormat = *format;
-    [m_pVideoCapSession setVideoFormat:m_videoFormat];
-    
-    return TRUE;
+    [m_pVideoCapSession setCapSessionFormat:m_capSessionFormat];
+
+    return MAC_S_OK;
 }
 
 void CMacAVVideoCapEngine::Uninit()
 {
     Stop();
-    
+
     [m_pVideoCapSession setSink:NULL];
     [m_pVideoCapSession release];
     m_pVideoCapSession = NULL;
+}
+
+CMacAVVideoCapSession *CMacAVVideoCapEngine::getAVVideoCapSession()
+{
+    return m_pVideoCapSession;
 }
 
 long CMacAVVideoCapEngine::Start()

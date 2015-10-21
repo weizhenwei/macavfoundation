@@ -24,26 +24,27 @@ class IMacAVVideoCapSessionSink;
     id							m_videoCaptureDataOutput;       // AVCaptureVideoDataOutput
     
     AVCaptureVideoOrientation	m_videoOrientation;
-    
-    MacVideoFormat              m_videoFormat;
-    
+
+    MACCaptureSessionFormat     m_format;
+
     IMacAVVideoCapSessionSink*  m_sink;
     NSRecursiveLock*            m_sinkLock;
-    
+
     float                       m_systemVersion;
 }
 
-- (id)initWithDeviceName:(NSString*)deviceName;
+- (id)init;
 
+- (AVCaptureSession *)getAVCaptureSesion;
 - (void)setSink:(IMacAVVideoCapSessionSink*)sink;
 
 - (BOOL)isRunning;
-- (int)startRun;
-- (int)stopRun;
+- (long)startRun;
+- (long)stopRun;
 - (void)captureCleanup;
 
-- (int)setVideoFormat:(MacVideoFormat&)format;
-- (int)getVideoFormat:(MacVideoFormat&)format;
+- (long)setCapSessionFormat:(MACCaptureSessionFormat&)format;
+- (long)getCapSessionFormat:(MACCaptureSessionFormat&)format;
 @end
 
 

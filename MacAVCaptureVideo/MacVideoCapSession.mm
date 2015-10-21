@@ -14,6 +14,7 @@
 #import <Foundation/NSString.h>
 
 #import "MacVideoCapSession.h"
+#import "MacLog.h"
 
 static void capture_cleanup(void* p)
 {
@@ -25,27 +26,58 @@ static void capture_cleanup(void* p)
 
 @implementation CMacAVVideoCapSession
 
-- (id)initWithDeviceName:(NSString*)deviceName
+- (id)init
 {
-    m_captureSession = NULL;
-    m_videoCaptureDevice = NULL;
-    m_videoCaptureInput = NULL;
-    m_videoCaptureDataOutput = NULL;
+    m_captureSession = nil;
+    m_videoCaptureDevice = nil;
+    m_videoCaptureInput = nil;
+    m_videoCaptureDataOutput = nil;
     m_videoOrientation = AVCaptureVideoOrientationPortrait;
-    memset(&m_videoFormat, sizeof(m_videoFormat), 0);
+    memset(&m_format, sizeof(m_format), 0);
     m_sink = NULL;
     m_sinkLock = [[NSRecursiveLock alloc] init];
     
     self = [super init];
-    if (NULL != self) {
-        m_captureSession = [[NSClassFromString(@"AVCaptureSession") alloc] init];
-        if (NULL != m_captureSession) {
-            m_videoCaptureDevice =
-            [[NSClassFromString(@"AVCaptureDevice") deviceWithUniqueID:deviceName] retain];
+    if (nil != self) {
+        m_captureSession = [[AVCaptureSession alloc] init];
+        if (nil == m_captureSession) {
+            MAC_LOG_ERROR("MacVideoCapSession::init(), couldn't init AVCaptureSession.");
+            return nil;
         }
+    } else {
+        MAC_LOG_ERROR("MacVideoCapSession::init(), super init failed.");
+        return nil;
     }
-    
+
     return self;
+}
+
+- (AVCaptureSession *)getAVCaptureSesion
+{
+    return m_captureSession;
+}
+
+- (long)setCapSessionFormat:(MACCaptureSessionFormat&)format
+{
+    m_videoCaptureDevice = format.capDevice;
+    [m_videoCaptureDevice retain];
+    m_format.capDevice = format.capDevice;
+    m_format.capFormat = format.capFormat;
+    m_format.capSessionPreset = format.capSessionPreset;
+    m_format.capFPS = format.capFPS;
+
+    return MAC_S_OK;
+}
+
+- (long)getCapSessionFormat:(MACCaptureSessionFormat&)format
+{
+    format.capDevice = m_videoCaptureDevice;
+    format.capDevice = m_format.capDevice;
+    format.capFormat = m_format.capFormat;
+    format.capSessionPreset = m_format.capSessionPreset;
+    format.capFPS = m_format.capFPS;
+
+    return MAC_S_OK;
 }
 
 - (void)dealloc
@@ -152,7 +184,7 @@ static void capture_cleanup(void* p)
     return [m_captureSession isRunning];
 }
 
-- (int)startRun
+- (long)startRun
 {
     if (YES == [m_captureSession isRunning]) {
         return MAC_S_FALSE;
@@ -168,18 +200,18 @@ static void capture_cleanup(void* p)
     [m_captureSession startRunning];
     if (NO == [m_captureSession isRunning]) {
         [self destroyVideoInputAndOutput];
-        return MAC_E_FAIL;
+        return MAC_S_FALSE;
     }
     
     return MAC_S_OK;
 }
 
-- (int)stopRun
+- (long)stopRun
 {
     if (NO == [m_captureSession isRunning]) {
         return MAC_S_FALSE;
     }
-    
+
     [m_captureSession stopRunning];
     [self destroyVideoInputAndOutput];
     if (YES == [m_captureSession isRunning]) {
@@ -194,8 +226,9 @@ static void capture_cleanup(void* p)
     [self release];
 }
 
-- (int)updateVideoFormat
+- (long)updateVideoFormat
 {
+#if 0
     if (MacYUY2 != m_videoFormat.video_type
         && MacARGB32 != m_videoFormat.video_type
         && MacBGRA32 != m_videoFormat.video_type) {
@@ -260,10 +293,12 @@ static void capture_cleanup(void* p)
     [m_videoCaptureDataOutput setVideoSettings:videoSettings];
     
     [m_captureSession commitConfiguration];
+#endif
     
     return MAC_S_OK;
 }
 
+#if 0
 - (int)setVideoFormat:(MacVideoFormat&)format;
 {
     m_videoFormat = format;
@@ -337,6 +372,7 @@ static void capture_cleanup(void* p)
     
     return MAC_S_OK;
 }
+#endif
 
 
 // Notes: the call back function will be called from capture thread.
