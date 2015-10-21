@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapSession.mm"
-            timestampString = "467112272.69977"
+            timestampString = "467123829.493844"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "286"
-            endingLineNumber = "286"
-            landmarkName = "-captureOutput:didOutputSampleBuffer:fromConnection:"
+            startingLineNumber = "301"
+            endingLineNumber = "301"
+            landmarkName = "-updateVideoFormat"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -54,7 +54,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
@@ -70,7 +70,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
@@ -161,6 +161,22 @@
             endingLineNumber = "113"
             landmarkName = "CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&amp; packet)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MacAVCaptureVideo/MacVideoCapSession.mm"
+            timestampString = "467123825.483156"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
+            landmarkName = "-updateVideoFormat"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

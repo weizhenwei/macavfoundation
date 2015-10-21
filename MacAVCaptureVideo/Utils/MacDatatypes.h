@@ -21,39 +21,32 @@ const long MAC_E_VIDEO_CAMERA_FAIL = MAC_E_DEVICE_BASE + 1;
 const long MAC_E_VIDEO_CAMERA_NOT_AUTHORIZED = MAC_E_DEVICE_BASE + 2;
 const long MAC_E_VIDEO_CAMERA_NO_DEVICE = MAC_E_DEVICE_BASE + 3;
 
-//currently only support these input video format
+// Y'CbCr 4:2:2 - yuvs: kCVPixelFormatType_422YpCbCr8_yuvs
+// Y'CbCr 4:2:2 - uyuv: kCVPixelFormatType_422YpCbCr8
+// Y'CbCr 4:2:0 - 420v: kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;
 typedef enum
 {
     MacUnknown   = 0,
-    /*yuv color formats*/
-    MacI420,
-    MacYV12,
-    MacNV12,
-    MacNV21,
-    MacYUY2,
-    /*rgb color formats*/
-    MacRGB24,
-    MacBGR24,
-    MacRGB24Flip,
-    MacBGR24Flip,
-    MacRGBA32,
-    MacBGRA32,
-    MacARGB32,
-    MacABGR32,
-    MacRGBA32Flip,
-    MacBGRA32Flip,
-    MacARGB32Flip,
-    MacABGR32Flip,
+    Macyuyv = kCVPixelFormatType_422YpCbCr8_yuvs,
+    Macuyvy = kCVPixelFormatType_422YpCbCr8,
+    MAC420v = kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange,
 } MacVideoType;
+
+typedef struct _output_format
+{
+    MacVideoType    video_type;
+    int             width;
+    int             height;
+} MacVideoOutputFormat;
 
 typedef struct _video_format
 {
-    MacVideoType	video_type;
-    unsigned long	width;
-    unsigned long	height;
-    float	        frame_rate;
+    MacVideoType    video_type;
+    unsigned long   width;
+    unsigned long   height;
+    float           frame_rate;
     unsigned long   time_stamp;
-} MacVideoFormat;
+} MacVideoSampleFormat;
 
 typedef struct _capsession_format
 {
@@ -72,7 +65,7 @@ typedef struct
 {
     unsigned char *pSrcData[MAX_PLANAR_NUM];
     unsigned int   uiSrcStride[MAX_PLANAR_NUM];
-    MacVideoFormat fmtVideoFormat;
+    MacVideoSampleFormat fmtVideoFormat;
     unsigned int   uiRotation;
     unsigned long  ulDataLen;
 } VideoRawDataPack;

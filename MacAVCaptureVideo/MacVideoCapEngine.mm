@@ -133,14 +133,12 @@ int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&
         }
         unsigned int uTimeStamp = static_cast<unsigned int>(time(NULL)/1000);
         packet.fmtVideoFormat = {MacUnknown, pixelWidth, pixelHeight, 0, uTimeStamp};
-        if (kCVPixelFormatType_422YpCbCr8 == pixelFormat) {
-            packet.fmtVideoFormat.video_type = MacUnknown; //video engine can't support UYVY color space
-        } else if (kCVPixelFormatType_422YpCbCr8_yuvs == pixelFormat) {
-            packet.fmtVideoFormat.video_type = MacYUY2;
-        } else if (kCVPixelFormatType_32ARGB == pixelFormat) {
-            packet.fmtVideoFormat.video_type = MacARGB32;
-        } else if (kCVPixelFormatType_32BGRA == pixelFormat) {
-            packet.fmtVideoFormat.video_type = MacBGRA32;
+        if (kCVPixelFormatType_422YpCbCr8_yuvs == pixelFormat) {
+            packet.fmtVideoFormat.video_type = Macyuyv;
+        } else if (kCVPixelFormatType_422YpCbCr8 == pixelFormat) {
+            packet.fmtVideoFormat.video_type = Macuyvy;
+        } else if (kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == pixelFormat) {
+            packet.fmtVideoFormat.video_type = MAC420v;
         } else {
             packet.fmtVideoFormat.video_type = MacUnknown;
         }

@@ -230,6 +230,34 @@ static void capture_cleanup(void* p)
     [self release];
 }
 
+
+// Y'CbCr 4:2:2 - yuvs: kCVPixelFormatType_422YpCbCr8_yuvs
+// Y'CbCr 4:2:2 - uyuv: kCVPixelFormatType_422YpCbCr8
+// Y'CbCr 4:2:0 - 420v: kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;
+- (MacVideoOutputFormat)getVideoOutputFormat
+{
+    MacVideoOutputFormat videoOutputFormat;
+    NSString *formatName = (NSString *)CMFormatDescriptionGetExtension(
+                            [m_format.capFormat formatDescription],
+                            kCMFormatDescriptionExtension_FormatName);
+    if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - yuvs"]) {
+        videoOutputFormat.video_type = (MacVideoType)kCVPixelFormatType_422YpCbCr8_yuvs;
+    } else if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - uyuv"]) {
+        videoOutputFormat.video_type = (MacVideoType)kCVPixelFormatType_422YpCbCr8;
+    } else if ([formatName isEqualToString:@"Y'CbCr 4:2:0 - 420v"]) {
+        videoOutputFormat.video_type = (MacVideoType)kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;
+    } else {
+        videoOutputFormat.video_type = MacUnknown;
+    }
+
+    CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(
+                                    (CMVideoFormatDescriptionRef)[m_format.capFormat formatDescription]);
+    videoOutputFormat.width = dimensions.width;
+    videoOutputFormat.height = dimensions.height;
+
+    return videoOutputFormat;
+}
+
 - (long)updateVideoFormat
 {
     if (nil == m_captureSession
@@ -262,14 +290,13 @@ static void capture_cleanup(void* p)
         return MAC_S_FALSE;
     }
 
-    // TODO: set the output settings; kCVPixelFormatType_32ARGB
-    // TODO: set the output settings; kCVPixelFormatType_422YpCbCr8_yuvs
+    MacVideoOutputFormat videoOutputFormat = [self getVideoOutputFormat];
     [m_videoCaptureDataOutput setVideoSettings:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                [NSNumber numberWithInt:kCVPixelFormatType_32ARGB],
+                                                [NSNumber numberWithInt: videoOutputFormat.video_type],
                                                 kCVPixelBufferPixelFormatTypeKey,
-                                                [NSNumber numberWithInt: 640],
+                                                [NSNumber numberWithInt: videoOutputFormat.width],
                                                 (id)kCVPixelBufferWidthKey,
-                                                [NSNumber numberWithInt: 360],
+                                                [NSNumber numberWithInt: videoOutputFormat.height],
                                                 (id)kCVPixelBufferHeightKey,
                                                 AVVideoScalingModeFit,
                                                 (id)AVVideoScalingModeKey,
