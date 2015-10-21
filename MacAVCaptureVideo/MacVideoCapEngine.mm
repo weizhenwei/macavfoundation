@@ -84,8 +84,7 @@ long CMacAVVideoCapEngine::Stop()
 
 int CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
 {
-    //    CDelivererMgr::DoDeliverImage(pVideoPack); //capture engine and video process MUST be in the same thread!!!!
-    
+    // TODO: save video data to video file;
     return MAC_S_OK;
 }
 

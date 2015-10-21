@@ -262,7 +262,8 @@ static void capture_cleanup(void* p)
         return MAC_S_FALSE;
     }
 
-    // TODO: set the output settings;
+    // TODO: set the output settings; kCVPixelFormatType_32ARGB
+    // TODO: set the output settings; kCVPixelFormatType_422YpCbCr8_yuvs
     [m_videoCaptureDataOutput setVideoSettings:[NSDictionary dictionaryWithObjectsAndKeys:
                                                 [NSNumber numberWithInt:kCVPixelFormatType_32ARGB],
                                                 kCVPixelBufferPixelFormatTypeKey,
@@ -278,83 +279,6 @@ static void capture_cleanup(void* p)
 
     return MAC_S_OK;
 }
-
-#if 0
-- (int)setVideoFormat:(MacVideoFormat&)format;
-{
-    m_videoFormat = format;
-    
-    if (MAC_S_OK != [self updateVideoFormat]) {
-        return MAC_E_FAIL;
-    }
-    
-    return MAC_S_OK;
-}
-
-- (int)getVideoFormat:(MacVideoFormat&)format
-{
-    format = m_videoFormat;
-    
-    if (NULL == m_captureSession || NULL == m_videoCaptureDataOutput) {
-        return MAC_E_POINTER;
-    }
-    
-    // get max frame rate
-    NSArray *connections = [m_videoCaptureDataOutput connections];
-    NSUInteger connectionCount = [connections count];
-    if (connectionCount > 0) {
-        id connection = [connections objectAtIndex:0];
-        if (YES == [connection isVideoMinFrameDurationSupported]) {
-            CMTime minFrameDuration = [connection videoMinFrameDuration];
-            format.frame_rate =
-            (minFrameDuration.value > 0) ? (minFrameDuration.timescale / minFrameDuration.value) : 0;
-        }
-    }
-    
-    // get video type
-    NSDictionary *videoSettings = [m_videoCaptureDataOutput videoSettings];
-    unsigned int pixelFormat = [[videoSettings objectForKey:
-                                 (NSString*)kCVPixelBufferPixelFormatTypeKey] unsignedIntValue];
-    if (kCVPixelFormatType_422YpCbCr8 == pixelFormat) {
-        format.video_type = MacUnknown;
-    } else if (kCVPixelFormatType_422YpCbCr8_yuvs == pixelFormat) {
-        format.video_type = MacYUY2;
-    } else if (kCVPixelFormatType_32ARGB == pixelFormat) {
-        format.video_type = MacARGB32;
-    } else if (kCVPixelFormatType_32BGRA == pixelFormat) {
-        format.video_type = MacBGRA32;
-    } else {
-        format.video_type = MacUnknown;
-    }
-    
-    // get video size
-    NSString *sessionPreset = [m_captureSession sessionPreset];
-    if (NSOrderedSame == [sessionPreset compare:AVCaptureSessionPreset320x240]) {
-        format.width = 320;
-        format.height = 240;
-    } else if (NSOrderedSame == [sessionPreset compare:AVCaptureSessionPreset352x288]) {
-        format.width = 352;
-        format.height = 288;
-    } else if (NSOrderedSame == [sessionPreset compare:AVCaptureSessionPreset640x480]) {
-        format.width = 640;
-        format.height = 480;
-    } else if (NSOrderedSame == [sessionPreset compare:AVCaptureSessionPreset960x540]) {
-        format.width = 960;
-        format.height = 540;
-    } else if (NSOrderedSame == [sessionPreset compare:AVCaptureSessionPreset1280x720]) {
-        format.width = 1280;
-        format.height = 720;
-    } else if (NSOrderedSame == [sessionPreset compare:AVCaptureSessionPresetHigh]
-               || NSOrderedSame == [sessionPreset compare:AVCaptureSessionPresetLow]
-               || NSOrderedSame == [sessionPreset compare:AVCaptureSessionPresetMedium]) {
-        format.width = 0;
-        format.height = 0;
-    }
-    
-    return MAC_S_OK;
-}
-#endif
-
 
 #pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
 // Notes: the call back function will be called from capture thread.
