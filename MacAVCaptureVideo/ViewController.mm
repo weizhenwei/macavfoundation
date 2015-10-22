@@ -317,16 +317,20 @@
     int intValue = -1;
     if (!([scanner scanInt:&intValue] && [scanner isAtEnd])) {
         NSString *warningMessage = [NSString stringWithFormat:@"ERROR: Input is invalid integer!"];
+        [m_alert setAlertStyle:NSWarningAlertStyle];
         [m_alert setMessageText:warningMessage];
         [m_alert runModal];
+        [warningMessage release];
         [tfFPS setFloatValue:m_fSelectedFPS];
         return;
     }
     if (intValue < m_fMinFPS || intValue > m_fMaxFPS) {
         NSString *warningMessage = [NSString stringWithFormat:@"ERROR: Valid FPS should be %d~%d!",
                                     (int)m_fMinFPS, (int)m_fMaxFPS];
+        [m_alert setAlertStyle:NSWarningAlertStyle];
         [m_alert setMessageText:warningMessage];
         [m_alert runModal];
+        [warningMessage release];
         [tfFPS setFloatValue:m_fSelectedFPS];
         return;
     }
@@ -384,7 +388,35 @@
     [panel setAllowsOtherFileTypes:NO];
     [panel setExtensionHidden:NO];
     [panel setCanCreateDirectories:YES];
-    [panel runModal];
+
+    NSInteger result = [panel runModal];
+    NSError *error = nil;
+    if (result == NSModalResponseOK) {
+        NSString *saveFilePath = [[panel URL] path];
+        if ([m_fmFileManager fileExistsAtPath:saveFilePath]) {
+            if (false == [m_fmFileManager removeItemAtPath:saveFilePath error:&error]) {
+                NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
+                MAC_LOG_ERROR("ViewController::saveVideoFile():" << [errorString UTF8String]);
+                [errorString release];
+                return MAC_S_FALSE;
+            }
+        }
+        if (false == [m_fmFileManager copyItemAtPath:m_strTmpVideoFile toPath:saveFilePath error:&error]) {
+            NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
+            MAC_LOG_ERROR("ViewController::saveVideoFile():" << [errorString UTF8String]);
+            [errorString release];
+            return MAC_S_FALSE;
+        } else {
+            NSString *infoMessage = [NSString stringWithFormat:@"Video File Saved To: %@",
+                                     saveFilePath];
+            [m_alert setAlertStyle:NSInformationalAlertStyle];
+            [m_alert setMessageText:infoMessage];
+            [m_alert runModal];
+            [infoMessage release];
+        }
+    } else {
+        return MAC_S_OK;
+    }
 
     return MAC_S_OK;
 }

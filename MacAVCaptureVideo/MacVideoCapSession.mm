@@ -310,6 +310,7 @@ static void capture_cleanup(void* p)
     videoOutputFormat.width = dimensions.width;
     videoOutputFormat.height = dimensions.height;
 
+    [formatName release];
     return videoOutputFormat;
 }
 
