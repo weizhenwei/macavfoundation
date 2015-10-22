@@ -128,13 +128,34 @@ long CMacAVVideoCapEngine::UpdateAVCaptureSessionFPS(float fps)
 
 long CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
 {
-    NSData *data = [NSData dataWithBytes:pVideoPack->pSrcData[0] length:pVideoPack->ulDataLen];
     if (m_bStartCapture && m_fileHandle) {
-        [m_fileHandle seekToEndOfFile];
-        [m_fileLock lock];
-        [m_fileHandle writeData:data];
-        m_ulCounter++;
-        [m_fileLock unlock];
+        if (kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == pVideoPack->fmtVideoFormat.video_type) {
+            [m_fileLock lock];
+            for (int i = 0; i < pVideoPack->ulPlaneCount; i++) {
+                NSData *data = [NSData dataWithBytes:pVideoPack->pSrcData[i]
+                                              length:pVideoPack->ulSrcDatalen[i]];
+                [m_fileHandle seekToEndOfFile];
+                [m_fileHandle writeData:data];
+            }
+            m_ulCounter++;
+            [m_fileLock unlock];
+        } else if (kCVPixelFormatType_422YpCbCr8_yuvs == pVideoPack->fmtVideoFormat.video_type) {
+            [m_fileLock lock];
+            NSData *data = [NSData dataWithBytes:pVideoPack->pSrcData[0]
+                                          length:pVideoPack->ulDataLen];
+            [m_fileHandle seekToEndOfFile];
+            [m_fileHandle writeData:data];
+            m_ulCounter++;
+            [m_fileLock unlock];
+        } else if (kCVPixelFormatType_422YpCbCr8 == pVideoPack->fmtVideoFormat.video_type) {
+            [m_fileLock lock];
+            NSData *data = [NSData dataWithBytes:pVideoPack->pSrcData[0]
+                                          length:pVideoPack->ulDataLen];
+            [m_fileHandle seekToEndOfFile];
+            [m_fileHandle writeData:data];
+            m_ulCounter++;
+            [m_fileLock unlock];
+        }
     }
 
     return MAC_S_OK;
@@ -153,23 +174,41 @@ long CMacAVVideoCapEngine::DeliverVideoData(CVImageBufferRef imageBuffer)
         }
         CVPixelBufferUnlockBaseAddress(imageBuffer, 0);
     }
-    
+
     return MAC_S_OK;
 }
 
 int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack& packet)
 {
-    packet.uiRotation = 0;
-    {
-        OSType pixelFormat = CVPixelBufferGetPixelFormatType(imageBuffer);
-        size_t pixelWidth = CVPixelBufferGetWidth(imageBuffer);
-        size_t pixelHeight = CVPixelBufferGetHeight(imageBuffer);
-        size_t bytesPerRow = CVPixelBufferGetBytesPerRow(imageBuffer);
-        void* baseAddress = CVPixelBufferGetBaseAddress(imageBuffer);
-        size_t dataSize = bytesPerRow * pixelHeight;
-        Boolean isPlanar = CVPixelBufferIsPlanar(imageBuffer);
-        size_t planeCount = CVPixelBufferGetPlaneCount(imageBuffer);
-        size_t planeSize[MAX_PLANE_COUNT];
+    packet.ulRotation = 0;
+    OSType pixelFormat = CVPixelBufferGetPixelFormatType(imageBuffer);
+    packet.fmtVideoFormat.video_type = MAC420v;
+    packet.fmtVideoFormat.width = CVPixelBufferGetWidth(imageBuffer);
+    packet.fmtVideoFormat.height = CVPixelBufferGetHeight(imageBuffer);
+    packet.fmtVideoFormat.frame_rate = 0;
+    packet.fmtVideoFormat.time_stamp = [[NSDate date] timeIntervalSince1970];
+    packet.ulPlaneCount = CVPixelBufferGetPlaneCount(imageBuffer);
+    if (kCVPixelFormatType_422YpCbCr8_yuvs == pixelFormat) {
+        packet.fmtVideoFormat.video_type = Macyuyv;
+        packet.pSrcData[0] = (unsigned char *)CVPixelBufferGetBaseAddress(imageBuffer);
+        packet.ulDataLen = CVPixelBufferGetBytesPerRow(imageBuffer) * packet.fmtVideoFormat.height;
+    } else if (kCVPixelFormatType_422YpCbCr8 == pixelFormat) {
+        packet.fmtVideoFormat.video_type = Macuyvy;
+        packet.pSrcData[0] = (unsigned char *)CVPixelBufferGetBaseAddress(imageBuffer);
+        packet.ulDataLen = CVPixelBufferGetBytesPerRow(imageBuffer) * packet.fmtVideoFormat.height;
+    } else if (kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == pixelFormat) {  // NV12 actually;
+        for (int i = 0; i < packet.ulPlaneCount; i++) {
+            packet.pSrcData[i] = (unsigned char *)CVPixelBufferGetBaseAddressOfPlane(imageBuffer, i);
+            packet.ulSrcStride[i] = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, i);
+            packet.ulSrcDatalen[i] = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, i)
+                                    * CVPixelBufferGetHeightOfPlane(imageBuffer, i);
+            packet.ulDataLen += packet.ulSrcDatalen[i];
+        }
+    } else {
+        packet.fmtVideoFormat.video_type = MacUnknown;
+    }
+
+#if 0
         if (true == isPlanar && planeCount > 0) {
             if (planeCount <= MAX_PLANE_COUNT) {
                 baseAddress = CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0);
@@ -188,16 +227,7 @@ int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&
         }
         unsigned int uTimeStamp = static_cast<unsigned int>(time(NULL)/1000);
         packet.fmtVideoFormat = {MacUnknown, pixelWidth, pixelHeight, 0, uTimeStamp};
-        if (kCVPixelFormatType_422YpCbCr8_yuvs == pixelFormat) {
-            packet.fmtVideoFormat.video_type = Macyuyv;
-        } else if (kCVPixelFormatType_422YpCbCr8 == pixelFormat) {
-            packet.fmtVideoFormat.video_type = Macuyvy;
-        } else if (kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == pixelFormat) {
-            packet.fmtVideoFormat.video_type = MAC420v;
-        } else {
-            packet.fmtVideoFormat.video_type = MacUnknown;
-        }
-        
+
         packet.pSrcData[0] =
         packet.pSrcData[1] =
         packet.pSrcData[2] = (unsigned char*)baseAddress;
@@ -206,6 +236,7 @@ int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&
         packet.uiSrcStride[2] = (unsigned int)bytesPerRow;
         packet.ulDataLen = dataSize;
     }
-    
-    return 0;
+#endif
+
+    return MAC_S_OK;
 }

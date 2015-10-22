@@ -45,10 +45,10 @@ typedef struct _output_format
 typedef struct _video_format
 {
     MacVideoType    video_type;
-    unsigned long   width;
-    unsigned long   height;
+    size_t          width;
+    size_t          height;
     float           frame_rate;
-    unsigned long   time_stamp;
+    NSTimeInterval  time_stamp;
 } MacVideoSampleFormat;
 
 typedef struct _capsession_format
@@ -66,11 +66,13 @@ typedef struct _capsession_format
 
 typedef struct
 {
-    unsigned char *pSrcData[MAX_PLANAR_NUM];
-    unsigned int   uiSrcStride[MAX_PLANAR_NUM];
+    unsigned char   *pSrcData[MAX_PLANAR_NUM];
+    size_t          ulSrcStride[MAX_PLANAR_NUM];
+    size_t          ulSrcDatalen[MAX_PLANAR_NUM];
     MacVideoSampleFormat fmtVideoFormat;
-    unsigned int   uiRotation;
-    unsigned long  ulDataLen;
+    size_t          ulPlaneCount;
+    unsigned int    ulRotation;
+    size_t          ulDataLen;
 } VideoRawDataPack;
 
 #endif

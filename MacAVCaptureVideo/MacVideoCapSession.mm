@@ -297,7 +297,7 @@ static void capture_cleanup(void* p)
                             kCMFormatDescriptionExtension_FormatName);
     if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - yuvs"]) {
         videoOutputFormat.video_type = (MacVideoType)kCVPixelFormatType_422YpCbCr8_yuvs;
-    } else if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - uyuv"]) {
+    } else if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - uyvy"]) {
         videoOutputFormat.video_type = (MacVideoType)kCVPixelFormatType_422YpCbCr8;
     } else if ([formatName isEqualToString:@"Y'CbCr 4:2:0 - 420v"]) {
         videoOutputFormat.video_type = (MacVideoType)kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;
