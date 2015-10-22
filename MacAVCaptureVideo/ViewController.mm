@@ -226,6 +226,7 @@
     [self setupButton];
     [self setupAlert];
     [self setupSessionFormat];
+    m_fmFileManager = [NSFileManager defaultManager];
 
     m_pVideoCapEngine = new CMacAVVideoCapEngine();
     if (NULL == m_pVideoCapEngine) {
@@ -345,17 +346,42 @@
         }
     }
 
-    // TODO: start capture video data;
+    NSString *currentDir = [m_fmFileManager currentDirectoryPath];
+    long currentTime = (long)[[NSDate date] timeIntervalSince1970];
+    NSString *tmpFile = [NSString stringWithFormat:@"%@/video-%ld.tmp",
+                         currentDir, currentTime];
+    if (false == [m_fmFileManager createFileAtPath:tmpFile contents:nil attributes:nil]) {
+        MAC_LOG_ERROR("ViewController::startCapture(), couldn't create video file");
+        return MAC_S_FALSE;
+    }
+
+    m_strTmpVideoFile = [tmpFile copy];
+    m_pVideoCapEngine->StartCapture(tmpFile);
 
     return MAC_S_OK;
 }
 
 - (long)saveVideoFile {
+    NSString *formatName = (NSString *)CMFormatDescriptionGetExtension(
+                            [m_pSelectedVideoFormat formatDescription],
+                            kCMFormatDescriptionExtension_FormatName);
+    NSString *suffix = nil;
+    if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - yuvs"]) {
+        suffix = @"yuvs";
+    } else if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - uyuv"]) {
+        suffix = @"uyuv";
+    } else if ([formatName isEqualToString:@"Y'CbCr 4:2:0 - 420v"]) {
+        suffix = @"420v";
+    } else {
+        suffix = @"unknown";
+    }
+
+    NSString *defaultFileName = [NSString stringWithFormat:@"Untitled.%@", suffix];
     NSSavePanel *panel = [NSSavePanel savePanel];
-    [panel setNameFieldStringValue:@"Untitle.h264"];
+    [panel setNameFieldStringValue:defaultFileName];
     [panel setMessage:@"Choose the path to save the video file"];
+    [panel setAllowedFileTypes:[NSArray arrayWithObject:suffix]];
     [panel setAllowsOtherFileTypes:NO];
-    [panel setAllowedFileTypes:@[@"h264"]];
     [panel setExtensionHidden:NO];
     [panel setCanCreateDirectories:YES];
     [panel runModal];
@@ -364,11 +390,13 @@
 }
 
 - (long)stopCapture {
-    // long ret = m_pVideoCapEngine->Stop();
-    // if (ret != MAC_S_OK) {
-    //     MAC_LOG_ERROR("ViewController::stopCapture(), stop VideoCapEngine failed!");
-    //     return MAC_S_FALSE;
-    // }
+    m_pVideoCapEngine->StopCapture();
+    [self saveVideoFile];
+    if (false == [m_fmFileManager removeItemAtPath:m_strTmpVideoFile error:nil]) {
+        MAC_LOG_ERROR("ViewController::stopCapture(), couldn't remove temp video file");
+        return MAC_S_FALSE;
+    }
+
     return MAC_S_OK;
 }
 

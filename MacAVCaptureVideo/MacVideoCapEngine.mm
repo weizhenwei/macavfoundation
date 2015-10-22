@@ -17,8 +17,8 @@
 #import "MacLog.h"
 
 #pragma mark CMacAVVideoCapEngine
-
-CMacAVVideoCapEngine::CMacAVVideoCapEngine() : m_pVideoCapSession(NULL)
+CMacAVVideoCapEngine::CMacAVVideoCapEngine() : m_pVideoCapSession(NULL), m_bStartCapture(false),
+                                               m_captureFile(nil)
 {
     memset(&m_capSessionFormat , 0, sizeof(m_capSessionFormat));
 }
@@ -84,6 +84,21 @@ bool CMacAVVideoCapEngine::IsRunning()
 long CMacAVVideoCapEngine::Stop()
 {
     return [m_pVideoCapSession stopRun];
+}
+
+long CMacAVVideoCapEngine::StartCapture(NSString *strCaptureFile)
+{
+    m_bStartCapture = true;
+    m_captureFile = [strCaptureFile copy];
+
+    return MAC_S_OK;
+}
+
+long CMacAVVideoCapEngine::StopCapture()
+{
+    m_bStartCapture = false;
+    
+    return MAC_S_OK;
 }
 
 long CMacAVVideoCapEngine::UpdateAVCaptureDeviceFormat(AVCaptureDeviceFormat *format)

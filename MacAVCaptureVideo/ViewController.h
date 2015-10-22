@@ -28,6 +28,9 @@
     MACCaptureSessionFormat m_capSessionFormat;
 
     NSAlert *m_alert;
+    
+    NSFileManager *m_fmFileManager;
+    NSString *m_strTmpVideoFile;
 }
 
 @property (assign) IBOutlet NSPopUpButton *itmVideoFormat;
