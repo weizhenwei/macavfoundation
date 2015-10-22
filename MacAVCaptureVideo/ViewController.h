@@ -31,6 +31,8 @@
     
     NSFileManager *m_fmFileManager;
     NSString *m_strTmpVideoFile;
+    NSTimeInterval m_ulStartCaptureTime;
+    NSTimer *m_timerRecordCapture;
 }
 
 @property (assign) IBOutlet NSPopUpButton *itmVideoFormat;
@@ -44,6 +46,8 @@
 
 @property (assign) IBOutlet NSButton *btnStart;
 - (IBAction)buttonClicked:(id)sender;
+
+@property (assign) IBOutlet NSTextField *tfTimer;
 
 @property (assign) IBOutlet NSImageView *ivPreviewView;
 

@@ -21,6 +21,7 @@
 @synthesize lblFPS;
 @synthesize tfFPS;
 @synthesize btnStart;
+@synthesize tfTimer;
 @synthesize ivPreviewView;
 
 #pragma mark Init Setup
@@ -188,6 +189,26 @@
     m_capSessionFormat.capFPS = m_fSelectedFPS;
 }
 
+- (void)timerFireMethod:(NSTimer *)timer {
+    if (timer != m_timerRecordCapture) {
+        MAC_LOG_ERROR("ViewController::timerFireMethod(), wrong timer.");
+        return;
+    }
+    
+    NSTimeInterval currentTime = [[NSDate date] timeIntervalSince1970];
+    NSTimeInterval duration = currentTime - m_ulStartCaptureTime;
+    [tfTimer setFloatValue:duration];
+}
+
+- (void)setupTimer {
+    NSTimeInterval interval = 0.1;
+    m_timerRecordCapture = [NSTimer timerWithTimeInterval:interval
+                            target:self selector:@selector(timerFireMethod:)
+                            userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:m_timerRecordCapture forMode:NSDefaultRunLoopMode];
+    [m_timerRecordCapture setFireDate:[NSDate distantFuture]];  // close timer;
+}
+
 - (long)startCapEngine {
     if (!m_pVideoCapEngine->IsRunning()) {
         [self setupSessionFormat];
@@ -226,6 +247,9 @@
     [self setupButton];
     [self setupAlert];
     [self setupSessionFormat];
+    [self setupTimer];
+    m_ulStartCaptureTime = [[NSDate date] timeIntervalSince1970];  // just for init;
+    [tfTimer setStringValue:@""];
     m_fmFileManager = [NSFileManager defaultManager];
 
     m_pVideoCapEngine = new CMacAVVideoCapEngine();
@@ -361,6 +385,8 @@
 
     m_strTmpVideoFile = [tmpFile copy];
     m_pVideoCapEngine->StartCapture(tmpFile);
+    m_ulStartCaptureTime = [[NSDate date] timeIntervalSince1970];
+    [m_timerRecordCapture setFireDate:[NSDate distantPast]];  // start timer;
 
     return MAC_S_OK;
 }
@@ -428,6 +454,8 @@
         MAC_LOG_ERROR("ViewController::stopCapture(), couldn't remove temp video file");
         return MAC_S_FALSE;
     }
+    [m_timerRecordCapture setFireDate:[NSDate distantFuture]];  // close timer;
+    [tfTimer setStringValue:@""];
 
     return MAC_S_OK;
 }

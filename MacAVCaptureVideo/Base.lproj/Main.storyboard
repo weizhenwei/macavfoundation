@@ -752,6 +752,14 @@
                                 <rect key="frame" x="80" y="24" width="320" height="180"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="cEl-pp-bCW"/>
                             </imageView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UrP-6L-Mmk">
+                                <rect key="frame" x="308" y="224" width="104" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="e3T-pg-jt0">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                         </subviews>
                     </customView>
                     <connections>
@@ -761,6 +769,7 @@
                         <outlet property="ivPreviewView" destination="Lq0-bF-6AC" id="7Zv-k7-nqF"/>
                         <outlet property="lblFPS" destination="Iuj-Gt-XFh" id="Qq5-TU-gAG"/>
                         <outlet property="tfFPS" destination="DVG-75-qsS" id="UqN-Ho-Z7l"/>
+                        <outlet property="tfTimer" destination="UrP-6L-Mmk" id="wvA-wR-xr5"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
