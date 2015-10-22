@@ -18,9 +18,10 @@
 
 #pragma mark CMacAVVideoCapEngine
 CMacAVVideoCapEngine::CMacAVVideoCapEngine() : m_pVideoCapSession(NULL), m_bStartCapture(false),
-                                               m_captureFile(nil)
+                                               m_captureFile(nil), m_fileHandle(nil), m_ulCounter(0)
 {
     memset(&m_capSessionFormat , 0, sizeof(m_capSessionFormat));
+    m_fileLock = [[NSLock alloc] init];
 }
 
 CMacAVVideoCapEngine::~CMacAVVideoCapEngine()
@@ -90,14 +91,22 @@ long CMacAVVideoCapEngine::StartCapture(NSString *strCaptureFile)
 {
     m_bStartCapture = true;
     m_captureFile = [strCaptureFile copy];
+    m_fileHandle = [[NSFileHandle fileHandleForWritingAtPath:m_captureFile] retain];
+    m_ulCounter = 0;
 
     return MAC_S_OK;
 }
 
-long CMacAVVideoCapEngine::StopCapture()
+long CMacAVVideoCapEngine::StopCapture(unsigned long &totalFrames)
 {
     m_bStartCapture = false;
-    
+    [m_fileLock lock];
+    [m_fileHandle closeFile];
+    m_fileHandle = nil;
+    totalFrames = m_ulCounter;
+    m_ulCounter = 0;
+    [m_fileLock unlock];
+
     return MAC_S_OK;
 }
 
@@ -117,16 +126,27 @@ long CMacAVVideoCapEngine::UpdateAVCaptureSessionFPS(float fps)
     return [m_pVideoCapSession updateAVCaptureSessionFPS:fps];
 }
 
-int CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
+long CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
 {
-    // TODO: save video data to video file;
+    NSData *data = [NSData dataWithBytes:pVideoPack->pSrcData[0] length:pVideoPack->ulDataLen];
+    if (m_bStartCapture && m_fileHandle) {
+        [m_fileHandle seekToEndOfFile];
+        [m_fileLock lock];
+        [m_fileHandle writeData:data];
+        m_ulCounter++;
+        [m_fileLock unlock];
+    }
+
     return MAC_S_OK;
 }
 
-int CMacAVVideoCapEngine::DeliverVideoData(CVImageBufferRef imageBuffer)
+long CMacAVVideoCapEngine::DeliverVideoData(CVImageBufferRef imageBuffer)
 {
+    if (!m_bStartCapture) {
+        return MAC_S_OK;
+    }
+
     VideoRawDataPack packet = { 0 };
-    
     if (kCVReturnSuccess == CVPixelBufferLockBaseAddress(imageBuffer, 0)) {
         if (0 == CVImageBuffer2VideoRawPacket(imageBuffer, packet)) {
             DeliverVideoData(&packet);

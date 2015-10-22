@@ -38,31 +38,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
-            timestampString = "467174667.000299"
+            timestampString = "467216425.681426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "CMacAVVideoCapEngine::DeliverVideoData(CVImageBufferRef imageBuffer)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
-            timestampString = "467174667.000299"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&amp; packet)"
             landmarkType = "7">
          </BreakpointContent>
@@ -74,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
-            timestampString = "467174667.000299"
+            timestampString = "467216425.681426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
             landmarkName = "CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&amp; packet)"
             landmarkType = "7">
          </BreakpointContent>
@@ -138,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
-            timestampString = "467174667.000299"
+            timestampString = "467216425.681426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "148"
-            endingLineNumber = "148"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&amp; packet)"
             landmarkType = "7">
          </BreakpointContent>
@@ -202,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
-            timestampString = "467170491.207418"
+            timestampString = "467213166.87441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "CMacAVVideoCapEngine::Stop()"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
-            timestampString = "467170706.716398"
+            timestampString = "467213166.87441"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "26"
-            endingLineNumber = "26"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
             landmarkName = "CMacAVVideoCapEngine::~CMacAVVideoCapEngine()"
             landmarkType = "5">
             <Locations>
@@ -250,11 +234,11 @@
                   moduleName = "MacAVCaptureVideo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/wzw/softwares/AVFoundation/MacAVCaptureVideo/MacAVCaptureVideo/MacVideoCapEngine.mm"
-                  timestampString = "467196483.670047"
+                  timestampString = "467216426.000533"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
                   offsetFromSymbolStart = "15">
                </Location>
                <Location
@@ -265,11 +249,11 @@
                   moduleName = "MacAVCaptureVideo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/wzw/softwares/AVFoundation/MacAVCaptureVideo/MacAVCaptureVideo/MacVideoCapEngine.mm"
-                  timestampString = "467196483.670174"
+                  timestampString = "467216426.000684"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
                   offsetFromSymbolStart = "16">
                </Location>
                <Location
@@ -280,11 +264,11 @@
                   moduleName = "MacAVCaptureVideo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/wzw/softwares/AVFoundation/MacAVCaptureVideo/MacAVCaptureVideo/MacVideoCapEngine.mm"
-                  timestampString = "467196483.670285"
+                  timestampString = "467216426.000794"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "27"
-                  endingLineNumber = "27"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
                   offsetFromSymbolStart = "16">
                </Location>
             </Locations>
@@ -313,11 +297,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/ViewController.mm"
-            timestampString = "467197018.224074"
+            timestampString = "467216185.971361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "450"
-            endingLineNumber = "450"
+            startingLineNumber = "458"
+            endingLineNumber = "458"
             landmarkName = "-stopCapture"
             landmarkType = "5">
          </BreakpointContent>
@@ -329,12 +313,60 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/ViewController.mm"
-            timestampString = "467197018.224074"
+            timestampString = "467216185.971361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "-saveVideoFile"
+            startingLineNumber = "428"
+            endingLineNumber = "428"
+            landmarkName = "-saveVideoFile:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MacAVCaptureVideo/ViewController.mm"
+            timestampString = "467196945.168424"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
+            landmarkName = "-timerFireMethod:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
+            timestampString = "467213320.383652"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
+            landmarkName = "CMacAVVideoCapEngine::StartCapture(NSString *strCaptureFile)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
+            timestampString = "467215713.227476"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -345,12 +377,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MacAVCaptureVideo/ViewController.mm"
-            timestampString = "467196945.168424"
+            timestampString = "467216185.971361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
-            landmarkName = "-timerFireMethod:"
+            startingLineNumber = "417"
+            endingLineNumber = "417"
+            landmarkName = "-saveVideoFile:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MacAVCaptureVideo/MacVideoCapEngine.mm"
+            timestampString = "467216425.681426"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "CMacAVVideoCapEngine::DeliverVideoData(CVImageBufferRef imageBuffer)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -391,20 +391,28 @@
     return MAC_S_OK;
 }
 
-- (long)saveVideoFile {
+- (long)saveVideoFile:(unsigned long)totalFrames {
+#if 0
     NSString *formatName = (NSString *)CMFormatDescriptionGetExtension(
                             [m_pSelectedVideoFormat formatDescription],
                             kCMFormatDescriptionExtension_FormatName);
-    NSString *suffix = nil;
+    CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(
+                                    (CMVideoFormatDescriptionRef)[m_pSelectedVideoFormat
+                                                                  formatDescription]);
+    NSString *format = nil;
     if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - yuvs"]) {
-        suffix = @"yuvs";
+        format = @"yuvs";
     } else if ([formatName isEqualToString:@"Y'CbCr 4:2:2 - uyuv"]) {
-        suffix = @"uyuv";
+        format = @"uyuv";
     } else if ([formatName isEqualToString:@"Y'CbCr 4:2:0 - 420v"]) {
-        suffix = @"420v";
+        format = @"420v";
     } else {
-        suffix = @"unknown";
+        format = @"unknown";
     }
+    NSString *suffix = [NSString stringWithFormat:@"%d_%d_%@.yuv",
+                        dimensions.width, dimensions.height, format];
+#endif
+    NSString *suffix = @"yuv";
 
     NSString *defaultFileName = [NSString stringWithFormat:@"Untitled.%@", suffix];
     NSSavePanel *panel = [NSSavePanel savePanel];
@@ -433,8 +441,8 @@
             [errorString release];
             return MAC_S_FALSE;
         } else {
-            NSString *infoMessage = [NSString stringWithFormat:@"Video File Saved To: %@",
-                                     saveFilePath];
+            NSString *infoMessage = [NSString stringWithFormat:@"Video File Saved To: %@ with %ld frames",
+                                     saveFilePath, totalFrames];
             [m_alert setAlertStyle:NSInformationalAlertStyle];
             [m_alert setMessageText:infoMessage];
             [m_alert runModal];
@@ -448,8 +456,9 @@
 }
 
 - (long)stopCapture {
-    m_pVideoCapEngine->StopCapture();
-    [self saveVideoFile];
+    unsigned long totalFrames;
+    m_pVideoCapEngine->StopCapture(totalFrames);
+    [self saveVideoFile:totalFrames];
     if (false == [m_fmFileManager removeItemAtPath:m_strTmpVideoFile error:nil]) {
         MAC_LOG_ERROR("ViewController::stopCapture(), couldn't remove temp video file");
         return MAC_S_FALSE;

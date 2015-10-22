@@ -26,17 +26,17 @@ public:
     bool IsRunning();
     long Stop();
     long StartCapture(NSString *strCaptureFile);
-    long StopCapture();
+    long StopCapture(unsigned long &totalFrames);
     
     // update series;
     long UpdateAVCaptureDeviceFormat(AVCaptureDeviceFormat *format);
     long UpdateAVCaptureSessionPreset(NSString *preset);
     long UpdateAVCaptureSessionFPS(float fps);
 
-    int DeliverVideoData(VideoRawDataPack* pVideoPack);
+    long DeliverVideoData(VideoRawDataPack* pVideoPack);
     
     // IMacAVVideoCapSessionSink
-    int DeliverVideoData(CVImageBufferRef imageBuffer);
+    long DeliverVideoData(CVImageBufferRef imageBuffer);
 
 private:
     CMacAVVideoCapSession*  m_pVideoCapSession;
@@ -44,6 +44,9 @@ private:
     
     bool m_bStartCapture;
     NSString *m_captureFile;
+    NSLock *m_fileLock;
+    NSFileHandle *m_fileHandle;
+    unsigned long m_ulCounter;
 };
 
 int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack &packet);
