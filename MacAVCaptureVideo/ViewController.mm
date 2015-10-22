@@ -144,6 +144,7 @@
 
     // set default fps;
     m_fSelectedFPS = m_fMaxFPS;
+    [tfFPS setFloatValue:m_fSelectedFPS];
 
     // set delegate;
     [tfFPS setDelegate:self];
@@ -187,9 +188,24 @@
     m_capSessionFormat.capFPS = m_fSelectedFPS;
 }
 
+- (long)startCapEngine {
+    if (!m_pVideoCapEngine->IsRunning()) {
+        [self setupSessionFormat];
+        long ret = m_pVideoCapEngine->Start(m_capSessionFormat);
+        if (ret != MAC_S_OK) {
+            MAC_LOG_ERROR("ViewController::startCapEngine(), start VideoCapEngine failed!");
+            return MAC_S_FALSE;
+        }
+    }
+
+    MAC_LOG_INFO("ViewController::startCapEngine(), VideoCapEngine is running now.");
+
+    return MAC_S_OK;
+}
+
+#pragma mark viewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [[self view] setAutoresizingMask:NSViewNotSizable];
 
     // Do any additional setup after loading the view.
@@ -225,12 +241,18 @@
         [self setupPreviewLayer];
     });
 
-    [self startCapture];
+    if (MAC_S_OK != [self startCapEngine]) {
+        return;
+    }
 }
 
 - (void)dealloc {
     [m_arraySessionPresets dealloc];
     [m_alert dealloc];
+    long ret = m_pVideoCapEngine->Stop();
+    if (ret != MAC_S_OK) {
+        MAC_LOG_ERROR("ViewController::dealloc(), stop VideoCapEngine failed!");
+    }
 
     [super dealloc];
 }
@@ -285,7 +307,7 @@
 }
 
 // overwrite NSTextFieldDelegate method;
-- (void)controlTextDidChange:(NSNotification *)notification {
+- (void)controlTextDidEndEditing:(NSNotification *)notification {
     NSTextField *tfField = [notification object];
     if (tfField != tfFPS) {
         MAC_LOG_ERROR("ViewController::controlTextDidChange(), wrong NSTextField passed in!");
@@ -296,8 +318,7 @@
         NSString *warningMessage = [NSString stringWithFormat:@"ERROR: Input is invalid integer!"];
         [m_alert setMessageText:warningMessage];
         [m_alert runModal];
-        tfFPS.stringValue = @"";
-        tfFPS.placeholderString = [NSString stringWithFormat:@"%d", (int)m_fMaxFPS];
+        [tfFPS setFloatValue:m_fSelectedFPS];
         return;
     }
     if (intValue < m_fMinFPS || intValue > m_fMaxFPS) {
@@ -305,8 +326,7 @@
                                     (int)m_fMinFPS, (int)m_fMaxFPS];
         [m_alert setMessageText:warningMessage];
         [m_alert runModal];
-        tfFPS.stringValue = @"";
-        tfFPS.placeholderString = [NSString stringWithFormat:@"%d", (int)m_fMaxFPS];
+        [tfFPS setFloatValue:m_fSelectedFPS];
         return;
     }
 
@@ -319,12 +339,13 @@
 
 - (long)startCapture {
     MAC_CHECK_NOTNULL(m_pVideoCapEngine);
-    [self setupSessionFormat];
-    long ret = m_pVideoCapEngine->Start(m_capSessionFormat);
-    if (ret != MAC_S_OK) {
-        MAC_LOG_ERROR("ViewController::startCapture(), start VideoCapEngine failed!");
-        return MAC_S_FALSE;
+    if (!m_pVideoCapEngine->IsRunning()) {
+        if (MAC_S_OK != [self startCapEngine]) {
+            return MAC_S_FALSE;
+        }
     }
+
+    // TODO: start capture video data;
 
     return MAC_S_OK;
 }
@@ -343,11 +364,11 @@
 }
 
 - (long)stopCapture {
-    long ret = m_pVideoCapEngine->Stop();
-    if (ret != MAC_S_OK) {
-        MAC_LOG_ERROR("ViewController::stopCapture(), stop VideoCapEngine failed!");
-        return MAC_S_FALSE;
-    }
+    // long ret = m_pVideoCapEngine->Stop();
+    // if (ret != MAC_S_OK) {
+    //     MAC_LOG_ERROR("ViewController::stopCapture(), stop VideoCapEngine failed!");
+    //     return MAC_S_FALSE;
+    // }
     return MAC_S_OK;
 }
 

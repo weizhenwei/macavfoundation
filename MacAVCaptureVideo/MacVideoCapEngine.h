@@ -23,6 +23,7 @@ public:
     CMacAVVideoCapSession *getAVVideoCapSession();
     
     long Start(MACCaptureSessionFormat &capSessionFormat);
+    bool IsRunning();
     long Stop();
     
     // update series;

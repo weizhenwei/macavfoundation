@@ -6,6 +6,9 @@
 //  Copyright (c) 2015 zhewei. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+
 #ifndef MacAVCaptureVideo_MacDatatypes_h
 #define MacAVCaptureVideo_MacDatatypes_h
 

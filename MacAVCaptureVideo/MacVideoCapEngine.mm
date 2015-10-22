@@ -76,6 +76,11 @@ long CMacAVVideoCapEngine::Start(MACCaptureSessionFormat &capSessionFormat)
     return MAC_S_OK;
 }
 
+bool CMacAVVideoCapEngine::IsRunning()
+{
+    return [m_pVideoCapSession isRunning];
+}
+
 long CMacAVVideoCapEngine::Stop()
 {
     return [m_pVideoCapSession stopRun];
