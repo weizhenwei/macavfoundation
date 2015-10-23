@@ -64,9 +64,12 @@
 
     // set default video format;
     if (bDefault) {
+        [itmVideoFormat selectItem:[itmVideoFormat itemWithTitle:defaultStrFormat]];
         [itmVideoFormat setTitle:defaultStrFormat];
         m_pSelectedVideoFormat = defaultFormat;
     } else {
+        [itmVideoFormat selectItem:[itmVideoFormat
+                                    itemWithTitle:m_mapVideoFormat.begin()->first]];
         [itmVideoFormat setTitle:m_mapVideoFormat.begin()->first];
         m_pSelectedVideoFormat = m_mapVideoFormat.begin()->second;
     }
@@ -107,11 +110,11 @@
     // set default session preset;
     if ([m_arraySessionPresets containsObject:AVCaptureSessionPreset1280x720]) {
         m_pSelectedSessionPreset = AVCaptureSessionPreset1280x720;
-        [itmSessionPreset setTitle:m_pSelectedSessionPreset];
     } else {
         m_pSelectedSessionPreset = [m_arraySessionPresets firstObject];
-        [itmSessionPreset setTitle:m_pSelectedSessionPreset];
     }
+    [itmSessionPreset selectItem:[itmSessionPreset itemWithTitle:m_pSelectedSessionPreset]];
+    [itmSessionPreset setTitle:m_pSelectedSessionPreset];
 
     return MAC_S_OK;
 }
@@ -290,9 +293,42 @@
 
 
 #pragma mark UI Response
+- (bool)checkEngineStart {
+    if (m_pVideoCapEngine->IsCapturing()) {
+        NSString *warningMessage = @"WARNING: Couldn't change parameters while capturing video, please stop first.";
+        [m_alert setAlertStyle:NSWarningAlertStyle];
+        [m_alert setMessageText:warningMessage];
+        [m_alert runModal];
+        [warningMessage release];
+        return MAC_S_FALSE;
+    }
+
+    return MAC_S_OK;
+}
+
 - (IBAction)selectVideoFormat:(id)sender {
     NSPopUpButton *btnVideoFormat = sender;
     NSString *strSelectedFormat = [btnVideoFormat titleOfSelectedItem];
+
+    NSString *formatName = (NSString *)CMFormatDescriptionGetExtension(
+                                [m_pSelectedVideoFormat formatDescription],
+                                kCMFormatDescriptionExtension_FormatName);
+    CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(
+                                    (CMVideoFormatDescriptionRef)
+                                    [m_pSelectedVideoFormat formatDescription]);
+    NSString *originVideoFormat = [NSString stringWithFormat:@"%@, %d x %d",
+                                   formatName, dimensions.width, dimensions.height];
+
+    if ([strSelectedFormat isEqualToString:originVideoFormat]) {
+        return;
+    }
+
+    if (MAC_S_OK != [self checkEngineStart]) {
+        [btnVideoFormat selectItem:[btnVideoFormat itemWithTitle:originVideoFormat]];
+        [btnVideoFormat setTitle:originVideoFormat];
+        return;
+    }
+
     if (m_mapVideoFormat.size() <= 0) {
         MAC_LOG_ERROR("ViewController::selectVideoFormat(), no AVCaptureDeviceFormat available!");
         return;
@@ -314,6 +350,16 @@
 - (IBAction)selectSessionPreset:(id)sender {
     NSPopUpButton *btnSessionPreset = sender;
     NSString *strSelectedSessionPreset = [btnSessionPreset titleOfSelectedItem];
+
+    if ([strSelectedSessionPreset isEqualToString:m_pSelectedSessionPreset]) {
+        return;
+    }
+    if (MAC_S_OK != [self checkEngineStart]) {
+        [btnSessionPreset selectItem:[btnSessionPreset itemWithTitle:m_pSelectedSessionPreset]];
+        [btnSessionPreset setTitle:m_pSelectedSessionPreset];
+        return;
+    }
+
     if (m_arraySessionPresets == nil || [m_arraySessionPresets count] <= 0) {
         MAC_LOG_ERROR("ViewController::selectSessionPreset(), no supported session preset available!");
         return;
@@ -356,6 +402,14 @@
         [m_alert runModal];
         [warningMessage release];
         [tfFPS setFloatValue:m_fSelectedFPS];
+        return;
+    }
+    
+    if ((int)m_fSelectedFPS == intValue) {
+        return;
+    }
+    if (MAC_S_OK != [self checkEngineStart]) {
+        [tfField setIntValue:(int)m_fSelectedFPS];
         return;
     }
 

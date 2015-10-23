@@ -110,6 +110,10 @@ long CMacAVVideoCapEngine::StopCapture(unsigned long &totalFrames)
     return MAC_S_OK;
 }
 
+bool CMacAVVideoCapEngine::IsCapturing() {
+    return m_bStartCapture;
+}
+
 long CMacAVVideoCapEngine::UpdateAVCaptureDeviceFormat(AVCaptureDeviceFormat *format)
 {
     m_capSessionFormat.capFormat = format;

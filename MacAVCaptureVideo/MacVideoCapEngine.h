@@ -27,7 +27,8 @@ public:
     long Stop();
     long StartCapture(NSString *strCaptureFile);
     long StopCapture(unsigned long &totalFrames);
-    
+    bool IsCapturing();
+
     // update series;
     long UpdateAVCaptureDeviceFormat(AVCaptureDeviceFormat *format);
     long UpdateAVCaptureSessionPreset(NSString *preset);
