@@ -493,7 +493,7 @@ _line_length = 80
 
 # The allowed extensions for file names
 # This is set by --extensions flag.
-_valid_extensions = set(['c', 'cc', 'h', 'cpp', 'cu', 'cuh', 'm', 'mm'])
+_valid_extensions = set(['c', 'cc', 'h', 'cpp', 'cu', 'cuh', "m", "mm"])
 
 def ParseNolintSuppressions(filename, raw_line, linenum, error):
   """Updates the global list of error-suppressions.
@@ -1661,7 +1661,9 @@ def GetHeaderGuardCPPVariable(filename):
   file_path_from_root = fileinfo.RepositoryName()
   if _root:
     file_path_from_root = re.sub('^' + _root + os.sep, '', file_path_from_root)
-  return re.sub(r'[-./\s]', '_', file_path_from_root).upper() + '_'
+  # return re.sub(r'[-./\s]', '_', file_path_from_root).upper() + '_'
+  # replaced by weizhenwei, 2015.06.26; Remove the annoying '_';
+  return re.sub(r'[-./\s]', '_', file_path_from_root).upper()
 
 
 def CheckForHeaderGuard(filename, lines, error):
@@ -1723,10 +1725,12 @@ def CheckForHeaderGuard(filename, lines, error):
   # The guard should be PATH_FILE_H_, but we also allow PATH_FILE_H__
   # for backward compatibility.
   if ifndef != cppvar:
-    error_level = 0
-    if ifndef != cppvar + '_':
-      error_level = 5
+    # removed by weizhenwei, 2015.06.26;
+    # error_level = 0
+    # if ifndef != cppvar + '_':
+    #   error_level = 5
 
+    error_level = 5
     ParseNolintSuppressions(filename, lines[ifndef_linenum], ifndef_linenum,
                             error)
     error(filename, ifndef_linenum, 'build/header_guard', error_level,
@@ -1739,10 +1743,12 @@ def CheckForHeaderGuard(filename, lines, error):
     return
 
   if endif != ('#endif  // %s' % cppvar):
-    error_level = 0
-    if endif != ('#endif  // %s' % (cppvar + '_')):
-      error_level = 5
+    # removed by weizhenwei, 2015.06.26;
+    # error_level = 0
+    # if endif != ('#endif  // %s' % (cppvar + '_')):
+    #   error_level = 5
 
+    error_level = 5
     ParseNolintSuppressions(filename, lines[endif_linenum], endif_linenum,
                             error)
     error(filename, endif_linenum, 'build/header_guard', error_level,
@@ -2418,19 +2424,20 @@ class NestingState(object):
 
         # Check that access keywords are indented +1 space.  Skip this
         # check if the keywords are not preceded by whitespaces.
-        indent = access_match.group(1)
-        if (len(indent) != classinfo.class_indent + 1 and
-            Match(r'^\s*$', indent)):
-          if classinfo.is_struct:
-            parent = 'struct ' + classinfo.name
-          else:
-            parent = 'class ' + classinfo.name
-          slots = ''
-          if access_match.group(3):
-            slots = access_match.group(3)
-          error(filename, linenum, 'whitespace/indent', 3,
-                '%s%s: should be indented +1 space inside %s' % (
-                    access_match.group(2), slots, parent))
+# removed by weizhenwei, 2015.06.29;
+#         indent = access_match.group(1)
+#         if (len(indent) != classinfo.class_indent + 1 and
+#             Match(r'^\s*$', indent)):
+#           if classinfo.is_struct:
+#             parent = 'struct ' + classinfo.name
+#           else:
+#             parent = 'class ' + classinfo.name
+#           slots = ''
+#           if access_match.group(3):
+#             slots = access_match.group(3)
+#           error(filename, linenum, 'whitespace/indent', 3,
+#                 '%s%s: should be indented +1 space inside %s' % (
+#                     access_match.group(2), slots, parent))
 
     # Consume braces or semicolons from what's left of the line
     while True:
@@ -4467,10 +4474,11 @@ def CheckIncludeLine(filename, clean_lines, linenum, include_state, error):
   #
   # We also make an exception for Lua headers, which follow google
   # naming convention but not the include convention.
-  match = Match(r'#include\s*"([^/]+\.h)"', line)
-  if match and not _THIRD_PARTY_HEADERS_PATTERN.match(match.group(1)):
-    error(filename, linenum, 'build/include', 4,
-          'Include the directory when naming .h files')
+  # removed by weizhenwei, 2015.06.27;
+  # match = Match(r'#include\s*"([^/]+\.h)"', line)
+  # if match and not _THIRD_PARTY_HEADERS_PATTERN.match(match.group(1)):
+  #  error(filename, linenum, 'build/include', 4,
+  #        'Include the directory when naming .h files')
 
   # we shouldn't include a file more than once. actually, there are a
   # handful of instances where doing so is okay, but in general it's
@@ -4711,10 +4719,11 @@ def CheckLanguage(filename, clean_lines, linenum, file_extension,
           'Did you mean "memset(%s, 0, %s)"?'
           % (match.group(1), match.group(2)))
 
-  if Search(r'\busing namespace\b', line):
-    error(filename, linenum, 'build/namespaces', 5,
-          'Do not use namespace using-directives.  '
-          'Use using-declarations instead.')
+# removed by weizhenwei, 2015.06.24;
+#  if Search(r'\busing namespace\b', line):
+#    error(filename, linenum, 'build/namespaces', 5,
+#          'Do not use namespace using-directives.  '
+#          'Use using-declarations instead.')
 
   # Detect variable-length arrays.
   match = Match(r'\s*(.+::)?(\w+) [a-z]\w*\[(.+)];', line)
