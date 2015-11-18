@@ -436,9 +436,16 @@
         MAC_LOG_ERROR("ViewController::startCapture(), couldn't create video file");
         return MAC_S_FALSE;
     }
+    NSString *metaFile = [NSString stringWithFormat:@"%@/video-%ld.tmp.meta",
+                         currentDir, currentTime];
+    if (false == [m_fmFileManager createFileAtPath:metaFile contents:nil attributes:nil]) {
+        MAC_LOG_ERROR("ViewController::startCapture(), couldn't create video meta file");
+        return MAC_S_FALSE;
+    }
 
     m_strTmpVideoFile = [tmpFile copy];
-    m_pVideoCapEngine->StartCapture(tmpFile);
+    m_strTmpMetaVideoFile = [metaFile copy];
+    m_pVideoCapEngine->StartCapture(tmpFile, metaFile);
     m_ulStartCaptureTime = [[NSDate date] timeIntervalSince1970];
     [m_timerRecordCapture setFireDate:[NSDate distantPast]];  // start timer;
 
@@ -487,19 +494,39 @@
                 return MAC_S_FALSE;
             }
         }
-        if (false == [m_fmFileManager moveItemAtPath:m_strTmpVideoFile toPath:saveFilePath error:&error]) {
+        bool bSaveVideoFile = [m_fmFileManager moveItemAtPath:m_strTmpVideoFile
+                                                       toPath:saveFilePath error:&error];
+        if (false == bSaveVideoFile) {
             NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
             MAC_LOG_ERROR("ViewController::saveVideoFile():" << [errorString UTF8String]);
             [errorString release];
             return MAC_S_FALSE;
-        } else {
-            NSString *infoMessage = [NSString stringWithFormat:@"Video File Saved To: %@ with %ld frames",
-                                     saveFilePath, totalFrames];
-            [m_alert setAlertStyle:NSInformationalAlertStyle];
-            [m_alert setMessageText:infoMessage];
-            [m_alert runModal];
-            [infoMessage release];
         }
+        
+        NSString *saveMetaFilePath = [NSString stringWithFormat:@"%@.meta", saveFilePath];
+        if ([m_fmFileManager fileExistsAtPath:saveMetaFilePath]) {
+            if (false == [m_fmFileManager removeItemAtPath:saveMetaFilePath error:&error]) {
+                NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
+                MAC_LOG_ERROR("ViewController::saveMetaVideoFile():" << [errorString UTF8String]);
+                [errorString release];
+                return MAC_S_FALSE;
+            }
+        }
+        bool bSaveMetaFile = [m_fmFileManager moveItemAtPath:m_strTmpMetaVideoFile
+                                                      toPath:saveMetaFilePath error:&error];
+        if (false == bSaveMetaFile) {
+            NSString *errorString = [[NSString alloc] initWithFormat:@"%@", error];
+            MAC_LOG_ERROR("ViewController::saveVideoFile():" << [errorString UTF8String]);
+            [errorString release];
+            return MAC_S_FALSE;
+        }
+        
+        NSString *infoMessage = [NSString stringWithFormat:@"Video File: %@, Meta File: %@,  With %ld frames",
+                                 saveFilePath, saveMetaFilePath, totalFrames];
+        [m_alert setAlertStyle:NSInformationalAlertStyle];
+        [m_alert setMessageText:infoMessage];
+        [m_alert runModal];
+        [infoMessage release];
     } else {
         return MAC_S_OK;
     }

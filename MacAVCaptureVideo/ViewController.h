@@ -31,6 +31,7 @@
     
     NSFileManager *m_fmFileManager;
     NSString *m_strTmpVideoFile;
+    NSString *m_strTmpMetaVideoFile;
     NSTimeInterval m_ulStartCaptureTime;
     NSTimer *m_timerRecordCapture;
 }

@@ -73,6 +73,7 @@ typedef struct
     size_t          ulPlaneCount;
     unsigned int    ulRotation;
     size_t          ulDataLen;
+    CMTime          pts;
 } VideoRawDataPack;
 
 #endif

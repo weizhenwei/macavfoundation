@@ -18,7 +18,8 @@
 
 #pragma mark CMacAVVideoCapEngine
 CMacAVVideoCapEngine::CMacAVVideoCapEngine() : m_pVideoCapSession(NULL), m_bStartCapture(false),
-                                               m_captureFile(nil), m_fileHandle(nil), m_ulCounter(0)
+                                               m_captureFile(nil), m_fileHandle(nil),
+                                               m_metaFile(nil), m_metaHandle(nil), m_ulCounter(0)
 {
     memset(&m_capSessionFormat , 0, sizeof(m_capSessionFormat));
     m_fileLock = [[NSLock alloc] init];
@@ -87,11 +88,13 @@ long CMacAVVideoCapEngine::Stop()
     return [m_pVideoCapSession stopRun];
 }
 
-long CMacAVVideoCapEngine::StartCapture(NSString *strCaptureFile)
+long CMacAVVideoCapEngine::StartCapture(NSString *strCaptureFile, NSString *strMetaFile)
 {
     m_bStartCapture = true;
     m_captureFile = [strCaptureFile copy];
     m_fileHandle = [[NSFileHandle fileHandleForWritingAtPath:m_captureFile] retain];
+    m_metaFile = [strMetaFile copy];
+    m_metaHandle = [[NSFileHandle fileHandleForWritingAtPath:m_metaFile] retain];
     m_ulCounter = 0;
 
     return MAC_S_OK;
@@ -103,6 +106,8 @@ long CMacAVVideoCapEngine::StopCapture(unsigned long &totalFrames)
     [m_fileLock lock];
     [m_fileHandle closeFile];
     m_fileHandle = nil;
+    [m_metaHandle closeFile];
+    m_metaHandle = nil;
     totalFrames = m_ulCounter;
     m_ulCounter = 0;
     [m_fileLock unlock];
@@ -142,6 +147,14 @@ long CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
                 [m_fileHandle writeData:data];
             }
             m_ulCounter++;
+
+            NSString *metaLine = [NSString stringWithFormat:@"FrameIdx:%lu timestamp:%lld:%d Resolution:%ld * %ld\n",
+                                 m_ulCounter, pVideoPack->pts.value, pVideoPack->pts.timescale,
+                                 pVideoPack->fmtVideoFormat.width, pVideoPack->fmtVideoFormat.height];
+            NSData *metaData = [metaLine dataUsingEncoding:NSUTF8StringEncoding];
+            [m_metaHandle seekToEndOfFile];
+            [m_metaHandle writeData:metaData];
+
             [m_fileLock unlock];
         } else if (kCVPixelFormatType_422YpCbCr8_yuvs == pVideoPack->fmtVideoFormat.video_type) {
             [m_fileLock lock];
@@ -150,6 +163,14 @@ long CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
             [m_fileHandle seekToEndOfFile];
             [m_fileHandle writeData:data];
             m_ulCounter++;
+
+            NSString *metaLine = [NSString stringWithFormat:@"FrameIdx:%lu timestamp:%lld:%d Resolution:%ld * %ld\n",
+                                 m_ulCounter, pVideoPack->pts.value, pVideoPack->pts.timescale,
+                                 pVideoPack->fmtVideoFormat.width, pVideoPack->fmtVideoFormat.height];
+            NSData *metaData = [metaLine dataUsingEncoding:NSUTF8StringEncoding];
+            [m_metaHandle seekToEndOfFile];
+            [m_metaHandle writeData:metaData];
+
             [m_fileLock unlock];
         } else if (kCVPixelFormatType_422YpCbCr8 == pVideoPack->fmtVideoFormat.video_type) {
             [m_fileLock lock];
@@ -158,6 +179,14 @@ long CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
             [m_fileHandle seekToEndOfFile];
             [m_fileHandle writeData:data];
             m_ulCounter++;
+
+            NSString *metaLine = [NSString stringWithFormat:@"FrameIdx:%lu timestamp:%lld:%d Resolution:%ld * %ld\n",
+                                 m_ulCounter, pVideoPack->pts.value, pVideoPack->pts.timescale,
+                                 pVideoPack->fmtVideoFormat.width, pVideoPack->fmtVideoFormat.height];
+            NSData *metaData = [metaLine dataUsingEncoding:NSUTF8StringEncoding];
+            [m_metaHandle seekToEndOfFile];
+            [m_metaHandle writeData:metaData];
+
             [m_fileLock unlock];
         }
     }
@@ -165,13 +194,16 @@ long CMacAVVideoCapEngine::DeliverVideoData(VideoRawDataPack* pVideoPack)
     return MAC_S_OK;
 }
 
-long CMacAVVideoCapEngine::DeliverVideoData(CVImageBufferRef imageBuffer)
+long CMacAVVideoCapEngine::DeliverVideoData(CMSampleBufferRef sampleBuffer)
 {
     if (!m_bStartCapture) {
         return MAC_S_OK;
     }
 
+    CMTime pts = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     VideoRawDataPack packet = { 0 };
+    packet.pts = pts;
     if (kCVReturnSuccess == CVPixelBufferLockBaseAddress(imageBuffer, 0)) {
         if (0 == CVImageBuffer2VideoRawPacket(imageBuffer, packet)) {
             DeliverVideoData(&packet);
@@ -211,36 +243,6 @@ int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&
     } else {
         packet.fmtVideoFormat.video_type = MacUnknown;
     }
-
-#if 0
-        if (true == isPlanar && planeCount > 0) {
-            if (planeCount <= MAX_PLANE_COUNT) {
-                baseAddress = CVPixelBufferGetBaseAddressOfPlane(imageBuffer, 0);
-                dataSize = 0;
-                size_t planeWidth = 0, planeHeight = 0, planeBytesPreRow = 0;
-                for (int i = 0; i < planeCount; i++) {
-                    planeWidth = CVPixelBufferGetWidthOfPlane(imageBuffer, i);
-                    planeHeight = CVPixelBufferGetHeightOfPlane(imageBuffer, i);
-                    planeBytesPreRow = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, i);
-                    planeSize[i] = planeBytesPreRow * planeHeight;
-                    dataSize += planeBytesPreRow * planeHeight;
-                }
-            } else {
-                return -1;
-            }
-        }
-        unsigned int uTimeStamp = static_cast<unsigned int>(time(NULL)/1000);
-        packet.fmtVideoFormat = {MacUnknown, pixelWidth, pixelHeight, 0, uTimeStamp};
-
-        packet.pSrcData[0] =
-        packet.pSrcData[1] =
-        packet.pSrcData[2] = (unsigned char*)baseAddress;
-        packet.uiSrcStride[0] =
-        packet.uiSrcStride[1] =
-        packet.uiSrcStride[2] = (unsigned int)bytesPerRow;
-        packet.ulDataLen = dataSize;
-    }
-#endif
-
+    
     return MAC_S_OK;
 }

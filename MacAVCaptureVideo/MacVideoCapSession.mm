@@ -371,10 +371,8 @@ static void capture_cleanup(void* p)
         return;
     }
     
-    CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    
     if (m_sink ) {
-        m_sink->DeliverVideoData(imageBuffer);
+        m_sink->DeliverVideoData(sampleBuffer);
     }
 }
 

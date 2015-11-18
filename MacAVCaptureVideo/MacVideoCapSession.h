@@ -58,7 +58,7 @@ class IMacAVVideoCapSessionSink
 public:
     virtual ~IMacAVVideoCapSessionSink() {}
     
-    virtual long DeliverVideoData(CVImageBufferRef imageBuffer) = 0;
+    virtual long DeliverVideoData(CMSampleBufferRef sampleBuffer) = 0;
 };
 
 #endif
