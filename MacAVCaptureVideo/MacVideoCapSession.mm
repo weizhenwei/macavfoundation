@@ -33,7 +33,7 @@ static void capture_cleanup(void* p)
     m_videoCaptureInput = nil;
     m_videoCaptureDataOutput = nil;
     m_videoOrientation = AVCaptureVideoOrientationPortrait;
-    memset(&m_format, sizeof(m_format), 0);
+    memset(&m_format, 0, sizeof(m_format));
     m_sink = NULL;
     m_sinkLock = [[NSRecursiveLock alloc] init];
     
