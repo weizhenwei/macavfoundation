@@ -120,7 +120,7 @@
 }
 
 - (long)setupFPS {
-    m_fMaxFPS = m_fMaxFPS = m_fSelectedFPS = 0.0f;
+    m_fMinFPS = m_fMaxFPS = m_fSelectedFPS = 0.0f;
     if (m_pSelectedVideoFormat == nil) {
         MAC_LOG_ERROR("ViewController::setupFPS(), m_pSelectedVideoFormat == nil.");
         return MAC_S_FALSE;
@@ -139,8 +139,8 @@
         if (m_fMaxFPS < [range maxFrameRate]) {
             m_fMaxFPS = [range maxFrameRate];
         }
-        if (m_fMaxFPS < [range maxFrameRate]) {
-            m_fMaxFPS = [range maxFrameRate];
+        if (m_fMinFPS > [range minFrameRate]) {
+            m_fMinFPS = [range minFrameRate];
         }
     }
     NSString *strLabel = [NSString stringWithFormat:@"FPS:%d~%d", (int)m_fMinFPS, (int)m_fMaxFPS];
