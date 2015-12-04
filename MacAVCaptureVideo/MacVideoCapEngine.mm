@@ -233,6 +233,7 @@ int CVImageBuffer2VideoRawPacket(CVImageBufferRef imageBuffer, VideoRawDataPack&
         packet.pSrcData[0] = (unsigned char *)CVPixelBufferGetBaseAddress(imageBuffer);
         packet.ulDataLen = CVPixelBufferGetBytesPerRow(imageBuffer) * packet.fmtVideoFormat.height;
     } else if (kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == pixelFormat) {  // NV12 actually;
+        packet.fmtVideoFormat.video_type = MAC420v;
         for (int i = 0; i < packet.ulPlaneCount; i++) {
             packet.pSrcData[i] = (unsigned char *)CVPixelBufferGetBaseAddressOfPlane(imageBuffer, i);
             packet.ulSrcStride[i] = CVPixelBufferGetBytesPerRowOfPlane(imageBuffer, i);
