@@ -34,7 +34,7 @@ static void capture_cleanup(void* p)
     m_videoCaptureDataOutput = nil;
     m_videoOrientation = AVCaptureVideoOrientationPortrait;
     memset(&m_format, 0, sizeof(m_format));
-    m_sink = NULL;
+    m_sink = nil;
     m_sinkLock = [[NSRecursiveLock alloc] init];
     
     self = [super init];
@@ -74,17 +74,12 @@ static void capture_cleanup(void* p)
 
 - (void)dealloc
 {
-    m_sink = NULL;
+    m_sink = nil;
     [m_sinkLock release];
-    m_sinkLock = NULL;
+    m_sinkLock = nil;
     
-    [m_captureSession removeInput:m_videoCaptureInput];
-    [m_captureSession removeOutput:m_videoCaptureDataOutput];
-    
-    [m_videoCaptureInput release];
-    [m_videoCaptureDataOutput release];
-    [m_videoCaptureDevice release];
     [m_captureSession release];
+    m_captureSession = nil;
     
     [super dealloc];
 }
@@ -164,9 +159,9 @@ static void capture_cleanup(void* p)
     m_videoCaptureInput = nil;
 
     [m_captureSession removeOutput:m_videoCaptureDataOutput];
-    [m_videoCaptureDataOutput setSampleBufferDelegate:NULL queue:NULL];
+    [m_videoCaptureDataOutput setSampleBufferDelegate:nil queue:nil];
     [m_videoCaptureDataOutput release];
-    m_videoCaptureDataOutput = NULL;
+    m_videoCaptureDataOutput = nil;
 
     [m_captureSession commitConfiguration];
 
