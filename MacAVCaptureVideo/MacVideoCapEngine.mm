@@ -27,7 +27,6 @@ CMacAVVideoCapEngine::CMacAVVideoCapEngine() : m_pVideoCapSession(NULL), m_bStar
 
 CMacAVVideoCapEngine::~CMacAVVideoCapEngine()
 {
-    Uninit();
 }
 
 long CMacAVVideoCapEngine::Init(MACCaptureSessionFormat &capSessioinFormat)
@@ -50,8 +49,6 @@ long CMacAVVideoCapEngine::Init(MACCaptureSessionFormat &capSessioinFormat)
 
 void CMacAVVideoCapEngine::Uninit()
 {
-    Stop();
-
     [m_pVideoCapSession setSink:NULL];
     [m_pVideoCapSession release];
     m_pVideoCapSession = NULL;
